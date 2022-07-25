@@ -16,6 +16,7 @@ const RSVPContentsStyled = styled.div`
     gap: .5rem;
     width: 20rem;
     line-height: 1.5;
+    text-align: left;
 `;
 
 const SectionContentsWrapper = styled.div`
@@ -60,7 +61,7 @@ const RSVPSection = () => {
             <SectionContentsWrapper>                
                 <RSVPContentsStyled>
                     <Typography type='header' color='white'>RSVP</Typography>
-                    <Typography color='white'>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</Typography>
+                    <Typography color='white'>Please enter your first and last name to look up your RSVP.</Typography>
                     <FormWrapper onSubmit={handleSubmit}>
                         <Input value={firstName} onChange={handleFirstNameChange} placeholder='First Name' />
                         <Input value={lastName} onChange={handleLastNameChange} placeholder='Last Name' />

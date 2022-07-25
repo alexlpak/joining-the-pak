@@ -2,6 +2,7 @@ import styled, { useTheme } from 'styled-components';
 
 const InputStyled = styled.input`
     font-family: 'Quincy CF';
+    font-weight: bold;
     font-size: 1rem;
     border-radius: .5rem;
     padding: 1rem;
