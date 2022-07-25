@@ -7,7 +7,8 @@ import QuincyCFBlackTTF from '../assets/fonts/Quincy CF Black/Quincy CF Black.tt
 const GlobalStyle = createGlobalStyle`
     html {
         font-size: 16px;
-        overscroll-behavior: contain;
+        overflow: hidden;
+        height: 100%;
     }
 
     * {
@@ -34,6 +35,8 @@ const GlobalStyle = createGlobalStyle`
 
     body {
         font-family: 'Minion Pro', serif;
+        overflow: auto;
+        height: 100%;
     }
 
     #root {
