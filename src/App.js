@@ -1,24 +1,30 @@
-import logo from './logo.svg';
-import './App.css';
+import GlobalStyle from './styles/GlobalStyle.styled';
+import ResetStyle from './styles/Reset.styled';
+import { theme } from './styles/theme';
+import { ThemeProvider } from 'styled-components';
+import Header from './sections/Header/Header';
+import OurStorySection from './sections/OurStory';
+import CarouselSection from './sections/Carousel';
+import DetailsSection from './sections/Details';
+import RegistrySection from './sections/Registry';
+import RSVPSection from './sections/RSVP';
+import Footer from './sections/Footer';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <ResetStyle />
+      <GlobalStyle />
+      <ThemeProvider theme={theme}>
+        <Header />
+        <CarouselSection />
+        <OurStorySection />
+        <DetailsSection />
+        <RegistrySection />
+        <RSVPSection />
+        <Footer />
+      </ThemeProvider>
+    </>
   );
 }
 
