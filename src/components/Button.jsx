@@ -3,6 +3,10 @@ import { theme } from '../styles/theme';
 
 const Button = styled.button`
     font-size: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: .5rem;
     font-family: 'Quincy CF';
     font-weight: bold;
     border: 2px solid ${({$secondary}) => $secondary ? theme.colors.main : 'white'};
@@ -15,13 +19,17 @@ const Button = styled.button`
     white-space: nowrap;
     opacity: 1;
     &:hover {
+        outline: 4px solid ${({ $secondary }) => $secondary ? 'white' : theme.colors.main};
         cursor: pointer;
+    };
+    &:active {
+        outline: 0px solid ${({ $secondary }) => $secondary ? 'white' : theme.colors.main};
     };
     &:disabled {
         cursor: not-allowed;
         opacity: 0.5;
     };
-    transition: all 250ms ease;
+    transition: all ${theme.animation.speed}ms ${theme.animation.curve};
 `;
 
 export default Button;

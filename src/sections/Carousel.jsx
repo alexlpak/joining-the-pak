@@ -9,7 +9,7 @@ const CarouselStyled = styled.div`
     background-position-x: center;
     background-position-y: 100%;
     width: 100%;
-    height: 35rem;
+    height: 50rem;
 `;
 
 const CarouselSection = () => {

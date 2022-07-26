@@ -6,6 +6,7 @@ import Line from '../components/Line';
 import FloralPatternPNG from '../assets/images/floral-pattern.png';
 import OurStoryImage from '../assets/images/our-story.jpg';
 import { useMediaQuery } from 'react-responsive';
+import { getDifferenceSinceDate } from '../helper/dates';
 
 const OurStoryContentsStyled = styled.div`
     display: flex;
@@ -42,6 +43,12 @@ const SectionContentsWrapper = styled.div`
     }
 `;
 
+const dateDifference = getDifferenceSinceDate('2013-11-18');
+
+const data = {
+    verbiage: `Our story began ${dateDifference.years.toLocaleString()} years ago back in 2013. As soon as we saw each other on move-in day our freshman year in college, we knew pretty quickly that we'd be together at some point. A few months later of spending time together, we began exclusively dating on November 18, 2013. Since then, we've done pretty much everything together from moving to Florida together to work at Disney World, graduating college together, and moving in together. It's been ${dateDifference.days.toLocaleString()} days of loving each together and a lifetime to go.`
+};
+
 const OurStorySection = () => {
     const theme = useTheme();
     const isMobileDevice = useMediaQuery({
@@ -54,7 +61,7 @@ const OurStorySection = () => {
                 <Line orientation={isMobileDevice ? 'horizontal' : 'vertical'} length='20rem' color={theme.colors.main} />
                 <OurStoryContentsStyled>
                     <Typography type='header' color={theme.colors.main}>Our Story</Typography>
-                    <Typography>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</Typography>
+                    <Typography>{data.verbiage}</Typography>
                 </OurStoryContentsStyled>
             </SectionContentsWrapper>
         </Section>

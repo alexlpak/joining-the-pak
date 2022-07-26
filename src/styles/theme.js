@@ -8,5 +8,9 @@ export const theme = {
     },
     colors: {
         main: '#789895'
+    },
+    animation: {
+        speed: 150,
+        curve: 'ease'
     }
 };

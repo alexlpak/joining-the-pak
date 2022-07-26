@@ -56,7 +56,6 @@ const RSVPSection = () => {
     };
 
     const handleFocus = e => {
-        console.log(e.target);
         e.target.focus();
         e.target.select();
     };
@@ -82,11 +81,29 @@ const RSVPSection = () => {
             <SectionContentsWrapper>                
                 <RSVPContentsStyled>
                     <Typography type='header' color='white'>RSVP</Typography>
-                    <Typography color='white'>Please enter your first and last name to look up your RSVP.</Typography>
+                    <Typography color='white'>Please enter your first and last name.</Typography>
                     <FormWrapper onSubmit={handleSubmit}>
-                        <Input onFocus={handleFocus} required value={firstName} onChange={handleFirstNameChange} placeholder='First Name' />
-                        <Input onFocus={handleFocus} required value={lastName} onChange={handleLastNameChange} placeholder='Last Name' />
-                        <Button type='submit' disabled={!(firstName && lastName)} $secondary>Submit</Button>
+                        <Input
+                            onFocus={handleFocus}
+                            required
+                            value={firstName}
+                            onChange={handleFirstNameChange}
+                            placeholder='First Name'
+                        />
+                        <Input
+                            onFocus={handleFocus}
+                            required
+                            value={lastName}
+                            onChange={handleLastNameChange}
+                            placeholder='Last Name'
+                        />
+                        <Button
+                        type='submit'
+                        disabled={!(firstName && lastName)}
+                        $secondary
+                        >
+                            <Typography bold>Submit</Typography>
+                        </Button>
                     </FormWrapper>
                 </RSVPContentsStyled>
                 <Line orientation={isMobileDevice ? 'horizontal' : 'vertical'} length='20rem' color='white' />

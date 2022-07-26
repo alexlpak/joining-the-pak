@@ -8,6 +8,9 @@ import { ImagePlaceholder } from './OurStory';
 import Button from '../components/Button';
 import RegistryImage from '../assets/images/registry.jpg';
 import { useMediaQuery } from 'react-responsive';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faExternalLink } from '@fortawesome/free-solid-svg-icons';
+import Link from '../components/Link.styled';
 
 const RegistryContentsStyled = styled.div`
     display: flex;
@@ -32,6 +35,10 @@ const ButtonWrapper = styled.div`
     gap: 1rem;
 `;
 
+const data = {
+    verbiage: `Thank you for being part of our special day. Your presence at our wedding is the greatest gift we could ask for! In this next stage in our life, we have been working hard to save up to purchase our first home together. While we do not require a gift, if you'd like to contribute towards that goal, we have linked our PayPal and Venmo links below.`
+};
+
 const RegistrySection = () => {
     const theme = useTheme();
     const isMobileDevice = useMediaQuery({
@@ -44,10 +51,16 @@ const RegistrySection = () => {
                 <Line orientation={isMobileDevice ? 'horizontal' : 'vertical'} length='20rem' color={theme.colors.main} />
                 <RegistryContentsStyled>
                     <Typography type='header' color={theme.colors.main}>Registry</Typography>
-                    <Typography>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</Typography>
+                    <Typography>{data.verbiage}</Typography>
                     <ButtonWrapper>
-                        <Button>Venmo</Button>
-                        <Button>Cash App</Button>
+                        <Button as={Link}>
+                            <Typography bold>Venmo</Typography>
+                            <FontAwesomeIcon icon={faExternalLink} />
+                        </Button>
+                        <Button as={Link}>
+                            <Typography bold>PayPal</Typography>
+                            <FontAwesomeIcon icon={faExternalLink} />
+                        </Button>
                     </ButtonWrapper>
                 </RegistryContentsStyled>
             </SectionContentsWrapper>
