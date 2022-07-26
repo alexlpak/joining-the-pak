@@ -5,7 +5,6 @@ const SectionStyled = styled.section`
     position: relative;
     flex-direction: column;
     align-items: center;
-    gap: 1rem;
     width: 100%;
     background-color: ${({ $color }) => $color || 'unset'};
     ${({ $backgroundImage }) => {
@@ -31,10 +30,10 @@ const SectionStyled = styled.section`
 const SectionContents = styled.div`
     max-width: 50rem;
     width: 100%;
-    padding: 3rem;
+    padding: 2rem;
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: ${({ $gap }) => $gap || '2rem'};
     ${({ $centered }) => {
         if ($centered) return css`
             align-items: center;
@@ -42,10 +41,10 @@ const SectionContents = styled.div`
     }}
 `;
 
-const Section = ({ backgroundImage, centered, as, color, children }) => {
+const Section = ({ id, backgroundImage, gap, centered, as, color, children }) => {
     return (
-        <SectionStyled as={as} $color={color} $backgroundImage={backgroundImage}>
-            <SectionContents $centered={centered}>
+        <SectionStyled id={id} as={as} $color={color} $backgroundImage={backgroundImage}>
+            <SectionContents $gap={gap} $centered={centered}>
                 {children}
             </SectionContents>
         </SectionStyled>

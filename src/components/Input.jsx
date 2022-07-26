@@ -11,10 +11,10 @@ const InputStyled = styled.input`
     outline: 2px solid white;
 `;
 
-const Input = ({ placeholder, onChange, value }) => {
+const Input = ({ onFocus, required, placeholder, onChange, value }) => {
     const theme = useTheme();
     return (
-        <InputStyled value={value} onChange={onChange} placeholder={placeholder} $color={theme.colors.main} type='text' />
+        <InputStyled onFocus={onFocus} required={required} value={value} onChange={onChange} placeholder={placeholder} $color={theme.colors.main} type='text' />
     );
 };
 

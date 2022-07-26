@@ -7,12 +7,14 @@ import FloralPatternPNG from '../assets/images/floral-pattern.png';
 import { ImagePlaceholder } from './OurStory';
 import Button from '../components/Button';
 import RegistryImage from '../assets/images/registry.jpg';
+import { useMediaQuery } from 'react-responsive';
 
 const RegistryContentsStyled = styled.div`
     display: flex;
     flex-direction: column;
     gap: .5rem;
-    width: 20rem;
+    width: 100%;
+    max-width: 20rem;
     line-height: 1.5;
 `;
 
@@ -20,6 +22,9 @@ const SectionContentsWrapper = styled.div`
     display: flex;
     align-items: center;
     gap: 1.5rem;
+    @media (max-width: 780px) {
+        flex-direction: column;
+    }
 `;
 
 const ButtonWrapper = styled.div`
@@ -29,11 +34,14 @@ const ButtonWrapper = styled.div`
 
 const RegistrySection = () => {
     const theme = useTheme();
+    const isMobileDevice = useMediaQuery({
+        query: '(max-width: 780px)',
+    });
     return (
-        <Section backgroundImage={FloralPatternPNG}>
+        <Section id='registry' backgroundImage={FloralPatternPNG}>
             <SectionContentsWrapper>                
                 <ImagePlaceholder $backgroundImage={RegistryImage} />
-                <Line orientation='vertical' length='20rem' color={theme.colors.main} />
+                <Line orientation={isMobileDevice ? 'horizontal' : 'vertical'} length='20rem' color={theme.colors.main} />
                 <RegistryContentsStyled>
                     <Typography type='header' color={theme.colors.main}>Registry</Typography>
                     <Typography>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</Typography>

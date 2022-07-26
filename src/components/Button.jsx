@@ -1,37 +1,27 @@
-import styled, { css, useTheme } from 'styled-components';
+import styled, { css } from 'styled-components';
+import { theme } from '../styles/theme';
 
-const ButtonStyled = styled.button`
+const Button = styled.button`
     font-size: 1rem;
     font-family: 'Quincy CF';
     font-weight: bold;
-    ${({ $borderColor }) => {
-        return css`
-            border: 2px solid ${$borderColor || 'white'}; 
-        `;
-    }};
+    border: 2px solid ${({$secondary}) => $secondary ? theme.colors.main : 'white'};
+    color: ${({$secondary}) => $secondary ? theme.colors.main : 'white'};
+    background-color: ${({$secondary}) => $secondary ? 'white' : theme.colors.main};
+    outline: 2px solid ${({ $secondary }) => $secondary ? 'white' : theme.colors.main};
     border-radius: .5rem;
     padding: .5rem 1rem;
     align-self: center;
-    color: ${({ $color }) => $color};
-    background-color: ${({ $backgroundColor }) => $backgroundColor};
-    outline: ${({ $outlineColor }) => `2px solid ${$outlineColor}`};
+    white-space: nowrap;
+    opacity: 1;
     &:hover {
         cursor: pointer;
     };
+    &:disabled {
+        cursor: not-allowed;
+        opacity: 0.5;
+    };
+    transition: all 250ms ease;
 `;
-
-const Button = ({ children, secondary }) => {
-    const theme = useTheme();
-    return (
-        <ButtonStyled
-            $backgroundColor={secondary ? 'white': theme.colors.main}
-            $color={secondary ? theme.colors.main : 'white'}
-            $borderColor={secondary ? theme.colors.main : 'white'}
-            $outlineColor={secondary ? 'white' : theme.colors.main}
-        >
-            {children}
-        </ButtonStyled>
-    );
-};
 
 export default Button;

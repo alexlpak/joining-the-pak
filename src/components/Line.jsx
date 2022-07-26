@@ -11,7 +11,8 @@ const LineStyled = styled.div`
         else if ($orientation === 'horizontal') {
             return css`
                 border-bottom: 2px solid ${$color || 'black'};
-                width: ${$length || '1rem'};
+                max-width: ${$length || '1rem'};
+                width: 100%;
             `;
         }
     }}

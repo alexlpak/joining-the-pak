@@ -10,6 +10,7 @@ const Header = () => {
             as='header'
             centered
             backgroundImage={FloralPatternPNG}
+            gap='2rem'
         >
             <Image src={NamesSVG} $height='10rem' />
             <HeaderNav />
