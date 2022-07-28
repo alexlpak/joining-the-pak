@@ -1,9 +1,10 @@
 import styled, { useTheme } from 'styled-components';
 import { theme } from '../styles/theme';
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import { capitalizeString } from '../helper/text';
+import { FormFieldValue } from '../types/forms';
 
 const InputStyled = styled.input`
     font-family: 'Quincy CF';
@@ -46,7 +47,15 @@ const ClearButtonStyled = styled.button.attrs({
     };
 `;
 
-const Input = ({ initValue, onChange, name, placeholder, ...rest }) => {
+interface InputProps {
+    initValue?: string;
+    onChange?: ({}: FormFieldValue) => void;
+    type: string;
+    name: string;
+    placeholder: string;
+};
+
+const Input: React.FC<InputProps> = ({ initValue, onChange, name, placeholder, ...rest }) => {
     const theme = useTheme();
 
     const [value, setValue] = useState(initValue || '');
@@ -59,7 +68,7 @@ const Input = ({ initValue, onChange, name, placeholder, ...rest }) => {
         if (onChange) onChange({ [name]: value });
     }, [value]);
 
-    const handleChange = (e) => {
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { value } = e.target;
         const capitalizedValue = capitalizeString(value);
         const regex = /^[A-Za-z]*$/g;
@@ -80,7 +89,7 @@ const Input = ({ initValue, onChange, name, placeholder, ...rest }) => {
                 placeholder={placeholder}
                 {...rest}
             />
-            {value && <ClearButtonStyled onClick={handleClearButtonClick} tabIndex='-1'>
+            {value && <ClearButtonStyled onClick={handleClearButtonClick} tabIndex={-1}>
                 <FontAwesomeIcon icon={faXmark} color={theme.colors.main} />
             </ClearButtonStyled>}
         </InputWrapperStyled>

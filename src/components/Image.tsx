@@ -1,11 +1,25 @@
 import styled, { css } from 'styled-components';
 
-const Image = styled.img`
+interface ImageHeight {
+    $height: string;
+    $width?: string;
+};
+
+interface ImageWidth {
+    $width: string;
+    $height?: string;
+};
+
+const Image = styled.img<ImageHeight | ImageWidth>`
     height: ${({ $height }) => $height };
     width: ${({ $width }) => $width };
 `;
 
-export const ImagePlaceholder = styled.div`
+interface ImagePlaceholderProps {
+    $backgroundImage: string;
+};
+
+export const ImagePlaceholder = styled.div<ImagePlaceholderProps>`
     ${({ $backgroundImage }) => {
         if ($backgroundImage) return css`
             background-image: url(${$backgroundImage});

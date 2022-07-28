@@ -1,6 +1,10 @@
 import styled from 'styled-components';
 
-const Link = styled.a`
+interface LinkProps {
+    $color?: string;
+};
+
+const Link = styled.a<LinkProps>`
     text-decoration: none;
     color: ${({ $color }) => $color};
     &:hover {

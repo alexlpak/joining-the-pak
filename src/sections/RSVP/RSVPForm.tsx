@@ -1,10 +1,11 @@
 import styled from 'styled-components';
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import Button from '../../components/Button';
 import ButtonSelect from '../../components/ButtonSelect';
 import Input from '../../components/Input';
 import Typography from '../../components/Typography';
 import { addConfetti } from '../../utilities/confetti';
+import { FormFieldValue } from '../../types/forms';
 
 const FormWrapper = styled.form`
     display: flex;
@@ -28,22 +29,30 @@ const ButtonWrapper = styled.div`
     gap: 1rem;
 `;
 
-const RSVPForm = () => {
-    const [value, setValue] = useState({});
+interface FormValue {
+    firstName?: string;
+    lastName?: string;
+    response?: string;
+    guests?: string;
+    [item: string]: any;
+};
+
+const RSVPForm: React.FC = () => {
+    const [value, setValue] = useState<FormValue>({});
     const [step, setStep] = useState(1);
     const [complete, setComplete] = useState(false);
 
-    const handleSubmit = (e) => {
+    const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         addConfetti();
     };
 
-    const handleChange = (value) => {
+    const handleChange = (value: FormFieldValue) => {
         setValue(prev => ({ ...prev, ...value }));
     };
 
     const formComplete = () => {
-        const complete = Object.keys(value).every(item => {
+        const complete = Object.keys(value).every((item) => {
             if (Array.isArray(value[item])) {
                 return value[item].length;
             };

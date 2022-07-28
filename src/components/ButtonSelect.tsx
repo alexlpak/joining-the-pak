@@ -1,7 +1,10 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Button from './Button';
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
 import styled from 'styled-components';
+import { FormFieldValue } from '../types/forms';
+import { FontAwesomeIconProps } from '@fortawesome/react-fontawesome';
+import { IconProp } from '@fortawesome/fontawesome-svg-core';
 
 const ButtonSelectWrapper = styled.div`
     display: flex;
@@ -11,20 +14,35 @@ const ButtonSelectWrapper = styled.div`
     align-items: center;
 `;
 
-const SelectButton = styled(Button)`
+interface SelectButtonProps {
+    icon?: IconProp;
+    onClick?: () => void;
+};
+
+const SelectButton = styled(Button)<SelectButtonProps>`
     width: 100%;
 `;
 
-const ButtonSelect = ({ onChange, name, options, multi, initValue }) => {
-    const [value, setValue] = useState(initValue || (multi ? [] : ''));
+interface ButtonSelectProps {
+    onChange: ({}: FormFieldValue) => void;
+    name: string;
+    options: string[];
+    multi?: boolean;
+    initValue?: string;
+};
+
+type ButtonSelectState = string[] | string;
+
+const ButtonSelect: React.FC<ButtonSelectProps> = ({ onChange, name, options, multi, initValue }) => {
+    const [value, setValue] = useState<ButtonSelectState>(initValue || (multi ? [] : ''));
 
     useEffect(() => {
         if (onChange) onChange({ [name]: value });
     }, [value]);
 
-    const handleClick = (option) => {
-        setValue(prev => {
-            if (multi) {
+    const handleClick = (option: string) => {
+        setValue((prev: ButtonSelectState) => {
+            if (Array.isArray(prev)) {
                 if (prev.includes(option)) {
                     return prev.filter(item => item !== option);
                 }
@@ -44,7 +62,8 @@ const ButtonSelect = ({ onChange, name, options, multi, initValue }) => {
                         onClick={() => handleClick(option)}
                         key={option}
                         secondary
-                        icon={multi ? value.includes(option) && faCheck : option === value && faCheck}
+                        iconVisible={multi ? value.includes(option) : option === value}
+                        icon={faCheck}
                     >
                         {option}
                     </SelectButton>

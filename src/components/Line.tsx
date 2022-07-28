@@ -1,6 +1,19 @@
+import React from 'react';
 import styled, { css } from 'styled-components';
 
-const LineStyled = styled.div`
+interface LineProps {
+    length: string;
+    color: string;
+    orientation: string;
+};
+
+interface LineStyledProps {
+    $length: string;
+    $color: string;
+    $orientation: string;
+};
+
+const LineStyled = styled.div<LineStyledProps>`
     ${({ $orientation, $color, $length }) => {
         if ($orientation === 'vertical') {
             return css`
@@ -18,7 +31,7 @@ const LineStyled = styled.div`
     }}
 `;
 
-const Line = ({ length, color, orientation }) => {
+const Line: React.FC<LineProps> = ({ length, color, orientation }) => {
     return (
         <LineStyled
             $length={length}

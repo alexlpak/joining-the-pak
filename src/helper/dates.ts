@@ -1,4 +1,4 @@
-export const getDifferenceSinceDate = (dateString) => {
+export const getDifferenceSinceDate = (dateString: string) => {
     const today = new Date();
     const date = new Date(dateString);
     const differenceTime = today.getTime() - date.getTime();

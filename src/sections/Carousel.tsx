@@ -6,7 +6,11 @@ import { Autoplay } from 'swiper';
 import 'swiper/css';
 import 'swiper/css/bundle';
 
-const CarouselImage = styled.div`
+interface CarouselImageProps {
+    $src: string;
+};
+
+const CarouselImage = styled.div<CarouselImageProps>`
     background-image: url(${({ $src }) => $src});
     background-size: cover;
     background-repeat: no-repeat;

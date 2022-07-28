@@ -20,7 +20,6 @@ const Footer = () => {
     const theme = useTheme();
     return (
         <Section
-            as='footer'
             centered
             backgroundImage={FloralPatternPNG}
             padding='4rem'

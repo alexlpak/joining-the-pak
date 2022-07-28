@@ -7,7 +7,6 @@ import FloralPatternPNG from '../../assets/images/floral-pattern.png';
 const Header = () => {
     return (
         <Section
-            as='header'
             centered
             backgroundImage={FloralPatternPNG}
             gap='2rem'

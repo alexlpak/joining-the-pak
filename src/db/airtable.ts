@@ -13,6 +13,15 @@ export const getDataFromTable = () => {
     .catch(error => console.error('ahhh!', error) );
 };
 
+type GuestEntry = {
+    firstName: string;
+    lastName: string;
+    householdId: string;
+    allowedGuests: number;
+    response: 'Yes' | 'No';
+    type: 'Invited' | 'Guest';
+};
+
 export const createNewEntry = ({
         firstName,
         lastName,
@@ -20,7 +29,7 @@ export const createNewEntry = ({
         allowedGuests,
         response,
         type = 'Invited'
-    }) => {
+    }: GuestEntry) => {
     const data = {
         records: [
             { fields: {

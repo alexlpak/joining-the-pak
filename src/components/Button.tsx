@@ -2,8 +2,14 @@ import styled from 'styled-components';
 import { theme } from '../styles/theme';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
+import React from 'react';
+import { IconProp } from '@fortawesome/fontawesome-svg-core';
 
-const ButtonStyled = styled.button`
+interface ButtonStyledProps {
+    $secondary?: boolean;
+};
+
+const ButtonStyled = styled.button<ButtonStyledProps>`
     font-size: 1rem;
     display: flex;
     justify-content: center;
@@ -53,12 +59,26 @@ const LoaderIcon = styled(FontAwesomeIcon).attrs({
     };
 `;
 
-const Button = ({ children, loading, icon, type = 'button', secondary, ...rest }) => {
+interface ButtonProps {
+    children: React.ReactNode;
+    as?: React.ElementType;
+    href?: string;
+    target?: string;
+    loading?: boolean;
+    icon?: IconProp;
+    iconVisible?: boolean;
+    disabled?: boolean;
+    onClick?: () => void;
+    secondary?: boolean;
+    type?: 'button' | 'submit';
+};
+
+const Button: React.FC<ButtonProps> = ({ children, loading, as, icon, type = 'button', secondary, iconVisible = true, ...rest }) => {
     return (
-        <ButtonStyled type={type} $secondary={secondary} {...rest}>
+        <ButtonStyled as={as} type={type} $secondary={secondary} {...rest}>
             {!loading && children}
             {loading && <LoaderIcon />}
-            {icon && !loading && <FontAwesomeIcon icon={icon} />}
+            {icon && !loading && iconVisible && <FontAwesomeIcon icon={icon} />}
         </ButtonStyled>
     );
 };

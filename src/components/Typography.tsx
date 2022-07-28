@@ -1,6 +1,16 @@
 import styled, { css } from 'styled-components';
+import { RemUnit } from '../types/styling';
 
-const TypographyStyled = styled.span`
+interface TypographyStyledProps {
+    $color?: string;
+    $bold?: boolean;
+    $fontFamily?: string;
+    $type?: 'header';
+    $size?: RemUnit;
+    $italic?: boolean;
+};
+
+const TypographyStyled = styled.span<TypographyStyledProps>`
     color: ${({ $color }) => $color};
     font-weight: ${({ $bold }) => $bold ? 'bold' : 'normal'};
     user-select: text;
@@ -23,7 +33,17 @@ const TypographyStyled = styled.span`
     font-style: ${({ $italic }) => $italic && 'italic'};
 `;
 
-const Typography = ({ bold, fontFamily, type, children, color, size, italic }) => {
+interface TypographyProps {
+    color?: string;
+    bold?: boolean;
+    fontFamily?: string;
+    children?: React.ReactNode[] | React.ReactNode;
+    type?: 'header';
+    size?: RemUnit;
+    italic?: boolean;
+};
+
+const Typography: React.FC<TypographyProps> = ({ bold, fontFamily, type, children, color, size, italic }) => {
     return (
         <TypographyStyled $fontFamily={fontFamily} $size={size} $italic={italic} $bold={bold} $type={type} $color={color}>
             {children}
