@@ -4,7 +4,7 @@ import { useTheme } from 'styled-components';
 import styled from 'styled-components';
 import Line from '../components/Line';
 import FloralPatternPNG from '../assets/images/floral-pattern.png';
-import { ImagePlaceholder } from './OurStory';
+import { ImagePlaceholder } from '../components/Image';
 import Button from '../components/Button';
 import RegistryImage from '../assets/images/registry.jpg';
 import { useMediaQuery } from 'react-responsive';
@@ -36,7 +36,7 @@ const ButtonWrapper = styled.div`
 `;
 
 const data = {
-    verbiage: `Thank you for being part of our special day. Your presence at our wedding is the greatest gift we could ask for! In this next stage in our life, we have been working hard to save up to purchase our first home together. While we do not require a gift, if you'd like to contribute towards that goal, we have linked our PayPal and Venmo links below.`
+    verbiage: `Thank you for being part of our special day. Your presence at our wedding is the greatest gift we could ask for!\n\nIn this next stage in our life, we have been working hard to save up to purchase our first home together.\n\nWhile we do not require a gift, if you'd like to contribute towards that goal, we have linked our PayPal and Venmo links below.`
 };
 
 const RegistrySection = () => {
@@ -53,14 +53,8 @@ const RegistrySection = () => {
                     <Typography type='header' color={theme.colors.main}>Registry</Typography>
                     <Typography>{data.verbiage}</Typography>
                     <ButtonWrapper>
-                        <Button as={Link}>
-                            <Typography bold>Venmo</Typography>
-                            <FontAwesomeIcon icon={faExternalLink} />
-                        </Button>
-                        <Button as={Link}>
-                            <Typography bold>PayPal</Typography>
-                            <FontAwesomeIcon icon={faExternalLink} />
-                        </Button>
+                        <Button as={Link} icon={faExternalLink}>Venmo</Button>
+                        <Button as={Link} icon={faExternalLink}>PayPal</Button>
                     </ButtonWrapper>
                 </RegistryContentsStyled>
             </SectionContentsWrapper>

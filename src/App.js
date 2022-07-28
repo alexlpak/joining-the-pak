@@ -7,7 +7,7 @@ import OurStorySection from './sections/OurStory';
 import CarouselSection from './sections/Carousel';
 import DetailsSection from './sections/Details';
 import RegistrySection from './sections/Registry';
-import RSVPSection from './sections/RSVP';
+import RSVPSection from './sections/RSVP/RSVP';
 import Footer from './sections/Footer';
 
 function App() {

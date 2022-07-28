@@ -1,8 +1,9 @@
 import Section from '../components/Section';
 import Typography from '../components/Typography';
-import { css, useTheme } from 'styled-components';
+import { useTheme } from 'styled-components';
 import styled from 'styled-components';
 import Line from '../components/Line';
+import { ImagePlaceholder } from '../components/Image';
 import FloralPatternPNG from '../assets/images/floral-pattern.png';
 import OurStoryImage from '../assets/images/our-story.jpg';
 import { useMediaQuery } from 'react-responsive';
@@ -17,23 +18,6 @@ const OurStoryContentsStyled = styled.div`
     line-height: 1.5;
 `;
 
-export const ImagePlaceholder = styled.div`
-    ${({ $backgroundImage }) => {
-        if ($backgroundImage) return css`
-            background-image: url(${$backgroundImage});
-            background-repeat: no-repeat;
-            background-position: center;
-            background-size: cover;
-        `;
-    }}
-    height: 20rem;
-    width: 100%;
-    max-width: 20rem;
-    border: none;
-    border-radius: .5rem;
-    background-color: lightgray;
-`;
-
 const SectionContentsWrapper = styled.div`
     display: flex;
     align-items: center;
@@ -46,7 +30,7 @@ const SectionContentsWrapper = styled.div`
 const dateDifference = getDifferenceSinceDate('2013-11-18');
 
 const data = {
-    verbiage: `Our story began ${dateDifference.years.toLocaleString()} years ago back in 2013. As soon as we saw each other on move-in day our freshman year in college, we knew pretty quickly that we'd be together at some point. A few months later of spending time together, we began exclusively dating on November 18, 2013. Since then, we've done pretty much everything together from moving to Florida together to work at Disney World, graduating college together, and moving in together. It's been ${dateDifference.days.toLocaleString()} days of loving each together and a lifetime to go.`
+    verbiage: `Our story began ${dateDifference.years.toLocaleString()} years ago in 2013. As soon as we saw each other on move-in day our freshman year in college, we knew pretty quickly that we'd be together at some point. A few months later of spending time together, we began exclusively dating on November 18, 2013.\n\nSince then, we've done pretty much everything together from moving to Florida to work at Disney World, graduating college, and moving in together. It's been ${dateDifference.days.toLocaleString()} days of loving each together and a lifetime to go.`
 };
 
 const OurStorySection = () => {

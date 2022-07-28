@@ -3,6 +3,9 @@ import styled, { css } from 'styled-components';
 const TypographyStyled = styled.span`
     color: ${({ $color }) => $color};
     font-weight: ${({ $bold }) => $bold ? 'bold' : 'normal'};
+    user-select: text;
+    font-family: ${({ $fontFamily }) => $fontFamily};
+    white-space: break-spaces;
     ${({ $type, $size }) => {
         if ($type === 'header') {
             return css`
@@ -16,12 +19,13 @@ const TypographyStyled = styled.span`
             line-height: 1.5;
             font-size: ${$size || '1rem'};
         `;
-    }}
+    }};
+    font-style: ${({ $italic }) => $italic && 'italic'};
 `;
 
-const Typography = ({ bold, type, children, color, size }) => {
+const Typography = ({ bold, fontFamily, type, children, color, size, italic }) => {
     return (
-        <TypographyStyled $size={size} $bold={bold} $type={type} $color={color}>
+        <TypographyStyled $fontFamily={fontFamily} $size={size} $italic={italic} $bold={bold} $type={type} $color={color}>
             {children}
         </TypographyStyled>
     )

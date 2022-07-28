@@ -30,7 +30,7 @@ const SectionStyled = styled.section`
 const SectionContents = styled.div`
     max-width: 50rem;
     width: 100%;
-    padding: 2rem;
+    padding: ${({ $padding }) => $padding || '2rem'};
     display: flex;
     flex-direction: column;
     gap: ${({ $gap }) => $gap || '2rem'};
@@ -41,10 +41,10 @@ const SectionContents = styled.div`
     }}
 `;
 
-const Section = ({ id, backgroundImage, gap, centered, as, color, children }) => {
+const Section = ({ id, padding, backgroundImage, gap, centered, as, color, children }) => {
     return (
         <SectionStyled id={id} as={as} $color={color} $backgroundImage={backgroundImage}>
-            <SectionContents $gap={gap} $centered={centered}>
+            <SectionContents $padding={padding} $gap={gap} $centered={centered}>
                 {children}
             </SectionContents>
         </SectionStyled>
