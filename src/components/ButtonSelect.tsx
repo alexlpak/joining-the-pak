@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import Button from './Button';
-import { faCheck } from '@fortawesome/free-solid-svg-icons';
+import { faCheck, faArrowPointer } from '@fortawesome/free-solid-svg-icons';
 import styled from 'styled-components';
 import { FormFieldValue } from '../types/forms';
-import { FontAwesomeIconProps } from '@fortawesome/react-fontawesome';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 
 const ButtonSelectWrapper = styled.div`
@@ -54,8 +53,22 @@ const ButtonSelect: React.FC<ButtonSelectProps> = ({ onChange, name, options, mu
         });
     };
 
+    const allOptionsSelected = Array.isArray(value) && value.length && value.every(item => options.includes(item));
+
+    const handleSelectAllClick = () => {
+        if (Array.isArray(value)) {
+            if (allOptionsSelected) {
+                setValue([]);
+            }
+            else {
+                setValue(options);
+            };
+        };
+    };
+
     return (
         <ButtonSelectWrapper>
+            {multi && options.length > 1 && <Button onClick={handleSelectAllClick} icon={faArrowPointer}>{allOptionsSelected ? 'Deselect All' : 'Select All'}</Button>}
             {options && options.map(option => {
                 return (
                     <SelectButton

@@ -73,9 +73,9 @@ interface ButtonProps {
     type?: 'button' | 'submit';
 };
 
-const Button: React.FC<ButtonProps> = ({ children, loading, as, icon, type = 'button', secondary, iconVisible = true, ...rest }) => {
+const Button: React.FC<ButtonProps> = ({ children, disabled, loading, as, icon, type = 'button', secondary, iconVisible = true, ...rest }) => {
     return (
-        <ButtonStyled as={as} type={type} $secondary={secondary} {...rest}>
+        <ButtonStyled disabled={disabled || loading} as={as} type={type} $secondary={secondary} {...rest}>
             {!loading && children}
             {loading && <LoaderIcon />}
             {icon && !loading && iconVisible && <FontAwesomeIcon icon={icon} />}
