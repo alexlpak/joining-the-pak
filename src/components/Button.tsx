@@ -15,8 +15,8 @@ const ButtonStyled = styled.button<ButtonStyledProps>`
     justify-content: center;
     align-items: center;
     gap: .5rem;
-    font-family: 'Quincy CF';
-    font-weight: bold;
+    font-family: quincy-cf, serif;
+    font-weight: 800;
     border: 2px solid ${({ $secondary }) => $secondary ? theme.colors.main : 'white'};
     color: ${({$secondary }) => $secondary ? theme.colors.main : 'white'};
     background-color: ${({ $secondary }) => $secondary ? 'white' : theme.colors.main};

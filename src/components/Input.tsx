@@ -7,8 +7,8 @@ import { capitalizeString } from '../helper/text';
 import { FormFieldValue } from '../types/forms';
 
 const InputStyled = styled.input`
-    font-family: 'Quincy CF';
-    font-weight: bold;
+    font-family: quincy-cf;
+    font-weight: 800;
     font-size: 1rem;
     border-radius: .5rem;
     padding: 1rem;

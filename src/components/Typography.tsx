@@ -19,9 +19,9 @@ const TypographyStyled = styled.span<TypographyStyledProps>`
     ${({ $type, $size }) => {
         if ($type === 'header') {
             return css`
-                font-family: 'Quincy CF';
+                font-family: quincy-cf, serif;
                 font-size: ${$size || '2rem'};
-                font-weight: bold;
+                font-weight: 800;
                 line-height: 1;
             `;
         }

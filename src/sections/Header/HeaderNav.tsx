@@ -15,7 +15,7 @@ const HeaderNavItems = styled.ul`
 `;
 
 const HeaderNavItem = styled.li`
-    font-family: 'Quincy CF', serif;
+    font-family: quincy-cf, serif;
     font-weight: bold;
     text-transform: uppercase;
     white-space: nowrap;

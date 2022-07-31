@@ -248,15 +248,15 @@ const RSVPForm: React.FC = () => {
             </Typography>
             <ConfirmationInfoWrapper>
                 <ConfirmationLabelWrapper>
-                    <Typography size='1.25rem' fontFamily='Quincy CF' color={theme.colors.main} bold>Name</Typography>
+                    <Typography size='1.25rem' fontFamily='quincy-cf, serif' color={theme.colors.main} bold>Name</Typography>
                     <Typography>{`${value?.firstName} ${value?.lastName}`}</Typography>
                 </ConfirmationLabelWrapper>
                 <ConfirmationLabelWrapper>
-                    <Typography size='1.25rem' fontFamily='Quincy CF' color={theme.colors.main} bold>Response</Typography>
+                    <Typography size='1.25rem' fontFamily='quincy-cf, serif' color={theme.colors.main} bold>Response</Typography>
                     <Typography>{value?.response}</Typography>
                 </ConfirmationLabelWrapper>
                 {Array.isArray(value.guests) && value?.guests.length && <ConfirmationLabelWrapper>
-                    <Typography size='1.25rem' fontFamily='Quincy CF' color={theme.colors.main} bold>Guests</Typography>
+                    <Typography size='1.25rem' fontFamily='quincy-cf, serif' color={theme.colors.main} bold>Guests</Typography>
                     {value.guests && value.guests.map((guest: string) => {
                         return <Typography key={guest}>{guest}</Typography>
                     })}
