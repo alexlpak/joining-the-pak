@@ -7,6 +7,7 @@ import { ImagePlaceholder } from '../../components/Image';
 import RSVPImage from '../../assets/images/rsvp.jpg';
 import { useMediaQuery } from 'react-responsive';
 import RSVPForm from './RSVPForm';
+import { RSVPFormContextProvider } from '../../contexts/RSVPFormContext';
 
 const SectionContentsWrapper = styled.div`
     display: flex;
@@ -33,19 +34,21 @@ const RSVPSection = () => {
 
     return (
         <Section id='rsvp' color={theme.colors.main}>
-            <SectionContentsWrapper>
-                <RSVPContentsWrapper>
-                    <Typography type='header' color='white'>RSVP</Typography>
-                    <RSVPForm />
-                </RSVPContentsWrapper>
-                <Line
-                    orientation={isMobileDevice ? 'horizontal' : 'vertical'}
-                    length='20rem'
-                    color='white'
-                />
-                <ImagePlaceholder $backgroundImage={RSVPImage} />
-            </SectionContentsWrapper>
-        </Section>
+                <SectionContentsWrapper>
+                    <RSVPContentsWrapper>
+                        <Typography type='header' color='white'>RSVP</Typography>
+                        <RSVPFormContextProvider>
+                            <RSVPForm />
+                        </RSVPFormContextProvider>
+                    </RSVPContentsWrapper>
+                    <Line
+                        orientation={isMobileDevice ? 'horizontal' : 'vertical'}
+                        length='20rem'
+                        color='white'
+                    />
+                    <ImagePlaceholder $backgroundImage={RSVPImage} />
+                </SectionContentsWrapper>
+            </Section>
     );
 };
 

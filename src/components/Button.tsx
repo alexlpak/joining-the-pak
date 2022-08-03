@@ -9,6 +9,12 @@ interface ButtonStyledProps {
     $secondary?: boolean;
 };
 
+export const ButtonWrapper = styled.div`
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+`;
+
 const ButtonStyled = styled.button<ButtonStyledProps>`
     font-size: 1rem;
     display: flex;

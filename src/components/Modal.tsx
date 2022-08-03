@@ -30,7 +30,7 @@ const ModalStyled = styled.div`
     background-color: white;
     color: black;
     border-radius: .5rem;
-    width: 20rem;
+    width: 25rem;
     display: flex;
     flex-direction: column;
     justify-content: center;

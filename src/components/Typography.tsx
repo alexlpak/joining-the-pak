@@ -8,6 +8,7 @@ interface TypographyStyledProps {
     $type?: 'header';
     $size?: RemUnit;
     $italic?: boolean;
+    $textAlign?: 'center' | 'left' | 'right';
 };
 
 const TypographyStyled = styled.span<TypographyStyledProps>`
@@ -31,6 +32,7 @@ const TypographyStyled = styled.span<TypographyStyledProps>`
         `;
     }};
     font-style: ${({ $italic }) => $italic && 'italic'};
+    text-align: ${({ $textAlign }) => $textAlign};
 `;
 
 interface TypographyProps {
@@ -41,11 +43,12 @@ interface TypographyProps {
     type?: 'header';
     size?: RemUnit;
     italic?: boolean;
+    textAlign?: 'center' | 'left' | 'right';
 };
 
-const Typography: React.FC<TypographyProps> = ({ bold, fontFamily, type, children, color, size, italic }) => {
+const Typography: React.FC<TypographyProps> = ({ bold, fontFamily, type, children, color, size, italic, textAlign }) => {
     return (
-        <TypographyStyled $fontFamily={fontFamily} $size={size} $italic={italic} $bold={bold} $type={type} $color={color}>
+        <TypographyStyled $textAlign={textAlign} $fontFamily={fontFamily} $size={size} $italic={italic} $bold={bold} $type={type} $color={color}>
             {children}
         </TypographyStyled>
     )

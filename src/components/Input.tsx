@@ -3,7 +3,6 @@ import { theme } from '../styles/theme';
 import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
-import { capitalizeString } from '../helper/text';
 import { FormFieldValue } from '../types/forms';
 
 const InputStyled = styled.input`
@@ -49,13 +48,14 @@ const ClearButtonStyled = styled.button.attrs({
 
 interface InputProps {
     initValue?: string;
-    onChange?: ({}: FormFieldValue) => void;
+    onChange?: (value: FormFieldValue) => void;
     type: string;
     name: string;
     placeholder: string;
+    required?: boolean;
 };
 
-const Input: React.FC<InputProps> = ({ initValue, onChange, name, placeholder, ...rest }) => {
+const Input: React.FC<InputProps> = ({ initValue, onChange, name, placeholder, required, ...rest }) => {
     const theme = useTheme();
 
     const [value, setValue] = useState(initValue || '');
@@ -66,14 +66,13 @@ const Input: React.FC<InputProps> = ({ initValue, onChange, name, placeholder, .
 
     useEffect(() => {
         if (onChange) onChange({ [name]: value });
-    }, [value]);
+    }, [value, onChange, name]);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { value } = e.target;
-        const capitalizedValue = capitalizeString(value);
         const regex = /^[A-Za-z]*$/g;
         const validInput = regex.test(value)
-        if (validInput) setValue(() => capitalizedValue)
+        if (validInput) setValue(() => value);
     };
 
     const handleClearButtonClick = () => {
@@ -87,6 +86,7 @@ const Input: React.FC<InputProps> = ({ initValue, onChange, name, placeholder, .
                 onChange={handleChange}
                 name={name}
                 placeholder={placeholder}
+                required={required}
                 {...rest}
             />
             {value && <ClearButtonStyled onClick={handleClearButtonClick} tabIndex={-1}>

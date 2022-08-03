@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import Button from './Button';
 import { faCheck, faArrowPointer } from '@fortawesome/free-solid-svg-icons';
 import styled from 'styled-components';
-import { FormFieldValue } from '../types/forms';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 
 const ButtonSelectWrapper = styled.div`
@@ -23,7 +22,7 @@ const SelectButton = styled(Button)<SelectButtonProps>`
 `;
 
 interface ButtonSelectProps {
-    onChange: ({}: FormFieldValue) => void;
+    onChange: (value: any) => void;
     name: string;
     options: string[];
     multi?: boolean;
@@ -37,7 +36,7 @@ const ButtonSelect: React.FC<ButtonSelectProps> = ({ onChange, name, options, mu
 
     useEffect(() => {
         if (onChange) onChange({ [name]: value });
-    }, [value]);
+    }, [onChange, value, name]);
 
     const handleClick = (option: string) => {
         setValue((prev: ButtonSelectState) => {

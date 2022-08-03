@@ -1,5 +1,6 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
+import { theme } from '../styles/theme';
 import { RemUnit } from '../types/styling';
 
 interface SectionStyledProps {
@@ -15,6 +16,7 @@ const SectionStyled = styled.section<SectionStyledProps>`
     align-items: center;
     width: 100%;
     background-color: ${({ $color }) => $color || 'unset'};
+    color: ${({ $color }) => $color === theme.colors.main ? 'white' : 'inherit'};
     ${({ $backgroundImage }) => {
         if ($backgroundImage) {
             return css`
