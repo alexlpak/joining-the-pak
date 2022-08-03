@@ -8,7 +8,6 @@ import { ImagePlaceholder } from '../components/Image';
 import Button from '../components/Button';
 import RegistryImage from '../assets/images/registry.jpg';
 import { useMediaQuery } from 'react-responsive';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faExternalLink } from '@fortawesome/free-solid-svg-icons';
 import Link from '../components/Link.styled';
 
