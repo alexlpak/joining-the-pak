@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import Form from '../../../components/Form';
 import Typography from '../../../components/Typography';
 import Input from '../../../components/Input';
@@ -25,9 +25,9 @@ const RSVPSearch: React.FC = () => {
 
     const { setRecord, setStep } = useRSVPFormContext();
 
-    const handleChange = (value: FormFieldValue) => {
+    const handleChange = useCallback((value: FormFieldValue) => {
         setValue((prev) => ({ ...prev, ...value }));
-    };
+    }, []);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();

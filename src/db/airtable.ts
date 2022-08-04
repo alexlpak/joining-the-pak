@@ -74,7 +74,6 @@ export const updateEntries = async (records: Record[]) => {
             }
             return output;
         });
-        console.log(JSON.stringify(updateRecords));
         const response: RequestResponse = await axios({
             method: 'patch',
             url: requestURL,

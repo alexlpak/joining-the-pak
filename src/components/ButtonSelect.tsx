@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Button from './Button';
 import { faCheck, faArrowPointer } from '@fortawesome/free-solid-svg-icons';
 import styled from 'styled-components';
@@ -34,34 +34,31 @@ type ButtonSelectState = string[] | string;
 const ButtonSelect: React.FC<ButtonSelectProps> = ({ onChange, name, options, multi, initValue }) => {
     const [value, setValue] = useState<ButtonSelectState>(initValue || (multi ? [] : ''));
 
-    useEffect(() => {
-        if (onChange) onChange({ [name]: value });
-    }, [onChange, value, name]);
-
     const handleClick = (option: string) => {
-        setValue((prev: ButtonSelectState) => {
-            if (Array.isArray(prev)) {
-                if (prev.includes(option)) {
-                    return prev.filter(item => item !== option);
-                }
-                else {
-                    return [...prev, option];
-                };
+        if (Array.isArray(value)) {
+            if (value.includes(option)) {
+                const update = value.filter(item => item !== option);
+                setValue(() => update);
+                onChange({ [name]: update });
             }
-            else return option;
-        });
+            else {
+                const update = [...value, option];
+                setValue(() => update);
+                onChange({ [name]: update });
+            };
+        }
+        else {
+            setValue(() => option);
+            onChange({ [name]: option });
+        };
     };
 
     const allOptionsSelected = Array.isArray(value) && value.length && value.every(item => options.includes(item));
 
     const handleSelectAllClick = () => {
         if (Array.isArray(value)) {
-            if (allOptionsSelected) {
-                setValue([]);
-            }
-            else {
-                setValue(options);
-            };
+            if (allOptionsSelected) setValue([]);
+            else setValue(options);
         };
     };
 

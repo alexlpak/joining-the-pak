@@ -14,7 +14,6 @@ interface TypographyStyledProps {
 const TypographyStyled = styled.span<TypographyStyledProps>`
     color: ${({ $color }) => $color};
     font-weight: ${({ $bold }) => $bold ? 'bold' : 'normal'};
-    user-select: text;
     font-family: ${({ $fontFamily }) => $fontFamily};
     white-space: break-spaces;
     ${({ $type, $size }) => {

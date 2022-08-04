@@ -26,24 +26,21 @@ const ButtonStyled = styled.button<ButtonStyledProps>`
     border: 2px solid ${({ $secondary }) => $secondary ? theme.colors.main : 'white'};
     color: ${({$secondary }) => $secondary ? theme.colors.main : 'white'};
     background-color: ${({ $secondary }) => $secondary ? 'white' : theme.colors.main};
-    outline: 2px solid ${({ $secondary }) => $secondary ? 'white' : theme.colors.main};
+    box-shadow: 0px 0px 0px 2px ${({ $secondary }) => $secondary ? 'white' : theme.colors.main};
     border-radius: .5rem;
     padding: .75rem 1rem;
     align-self: center;
     white-space: nowrap;
     opacity: 1;
-    & * {
-        user-select: none;
-    };
     &:focus {
-        outline: 4px solid ${({ $secondary }) => $secondary ? 'white' : theme.colors.main};
+        box-shadow: 0px 0px 0px 4px ${({ $secondary }) => $secondary ? 'white' : theme.colors.main};
     };
     &:hover {
-        outline: 4px solid ${({ $secondary }) => $secondary ? 'white' : theme.colors.main};
+        box-shadow: 0px 0px 0px 4px ${({ $secondary }) => $secondary ? 'white' : theme.colors.main};
         cursor: pointer;
     };
     &:active {
-        outline: 0px solid ${({ $secondary }) => $secondary ? 'white' : theme.colors.main};
+        box-shadow: 0px 0px 0px 0px ${({ $secondary }) => $secondary ? 'white' : theme.colors.main};
     };
     &:disabled {
         cursor: not-allowed;

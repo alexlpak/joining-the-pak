@@ -1,6 +1,6 @@
 import styled, { useTheme } from 'styled-components';
 import { theme } from '../styles/theme';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FormFieldValue } from '../types/forms';
@@ -13,12 +13,13 @@ const InputStyled = styled.input`
     padding: 1rem;
     background-color: white;
     border: 2px solid ${theme.colors.main};
-    outline: 2px solid white;
+    box-shadow: 0px 0px 0px 2px white;
     width: 100%;
     &:focus {
-        outline: 4px solid white
+        outline: none;
+        box-shadow: 0px 0px 0px 4px white;
     };
-    transition: outline ${theme.animation.speed}ms ${theme.animation.curve};
+    transition: box-shadow ${theme.animation.speed}ms ${theme.animation.curve};
 `;
 
 const InputWrapperStyled = styled.div`
@@ -68,12 +69,12 @@ const Input: React.FC<InputProps> = ({ initValue, onChange, name, placeholder, r
         if (onChange) onChange({ [name]: value });
     }, [value, onChange, name]);
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
         const { value } = e.target;
-        const regex = /^[A-Za-z]*$/g;
+        const regex = /^[A-Za-z]{0,15}$/g;
         const validInput = regex.test(value)
         if (validInput) setValue(() => value);
-    };
+    }, []);
 
     const handleClearButtonClick = () => {
         setValue('');
