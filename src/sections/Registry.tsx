@@ -52,8 +52,8 @@ const RegistrySection = () => {
                     <Typography type='header' color={theme.colors.main}>Registry</Typography>
                     <Typography>{data.verbiage}</Typography>
                     <ButtonWrapper>
-                        <Button as={Link} icon={faExternalLink}>Venmo</Button>
-                        <Button as={Link} icon={faExternalLink}>PayPal</Button>
+                        <Button target='_blank' href={`https://venmo.com/?txn=pay&audience=public&recipients=Amber-McClanahan&note=Amber%20and%20Alex%20Wedding%20House%20Fund`} as={Link} icon={faExternalLink}>Venmo</Button>
+                        <Button target='_blank' href={`https://www.paypal.com/paypalme/AmberMcClanahan?country.x=US&locale.x=en_US`} as={Link} icon={faExternalLink}>PayPal</Button>
                     </ButtonWrapper>
                 </RegistryContentsStyled>
             </SectionContentsWrapper>
