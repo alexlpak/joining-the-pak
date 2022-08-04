@@ -10,11 +10,12 @@ import RegistryImage from '../assets/images/registry.jpg';
 import { useMediaQuery } from 'react-responsive';
 import { faExternalLink } from '@fortawesome/free-solid-svg-icons';
 import Link from '../components/Link.styled';
+import { ButtonWrapper } from '../components/Button';
 
 const RegistryContentsStyled = styled.div`
     display: flex;
     flex-direction: column;
-    gap: .5rem;
+    gap: 1rem;
     width: 100%;
     max-width: 20rem;
     line-height: 1.5;
@@ -27,11 +28,6 @@ const SectionContentsWrapper = styled.div`
     @media (max-width: 780px) {
         flex-direction: column;
     }
-`;
-
-const ButtonWrapper = styled.div`
-    display: flex;
-    gap: 1rem;
 `;
 
 const data = {

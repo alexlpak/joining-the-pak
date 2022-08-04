@@ -22,14 +22,14 @@ const Footer = () => {
         <Section
             centered
             backgroundImage={FloralPatternPNG}
-            padding='4rem'
+            padding='4rem 2rem'
         >
             <FooterWrapper>
                 <HashTagWrapper>
                     <Typography bold color={theme.colors.main} size='1.5rem'>#</Typography>
                     <Typography bold color='black' size='1.5rem'>JoiningThePak</Typography>
                 </HashTagWrapper>
-                <Typography italic color='black'>Website designed and developed by <Link href='mailto: alex@apak.design' $color={theme.colors.main}>Alex Pak</Link></Typography>
+                <Typography textAlign='center' italic color='black'>Website designed and developed by <Link href='mailto: alex@apak.design' $color={theme.colors.main}>Alex Pak</Link></Typography>
             </FooterWrapper>
         </Section>
     );

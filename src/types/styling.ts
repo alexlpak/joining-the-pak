@@ -1,1 +1,1 @@
-export type RemUnit = `${number}rem`;
+export type RemUnit = `${number}rem` | `${number}rem ${number}rem`;
