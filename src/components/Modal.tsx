@@ -30,12 +30,13 @@ const ModalStyled = styled.div`
     background-color: white;
     color: black;
     border-radius: .5rem;
-    width: 25rem;
+    max-width: 25rem;
     display: flex;
     flex-direction: column;
     justify-content: center;
     gap: 1rem;
     text-align: left;
+    margin: 1rem;
 `;
 
 interface ModalProps {

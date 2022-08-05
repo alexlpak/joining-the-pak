@@ -1,5 +1,5 @@
 import React, { useContext, useState, createContext } from 'react';
-import { Record, GuestEntry } from '../db/airtable';
+import { Record, GuestEntry } from '../api/guests';
 import RSVPModal from '../sections/RSVP/forms/RSVPModal';
 
 interface RSVPFormContextType {
@@ -9,6 +9,8 @@ interface RSVPFormContextType {
     setResponse: React.Dispatch<React.SetStateAction<string>>;
     party: Record[];
     setParty: React.Dispatch<React.SetStateAction<Record[]>>;
+    partyId: string;
+    setPartyId: React.Dispatch<React.SetStateAction<string>>;
     guests: GuestEntry[];
     setGuests: React.Dispatch<React.SetStateAction<GuestEntry[]>>;
     step: keyof Steps;
@@ -39,6 +41,7 @@ export const RSVPFormContextProvider: React.FC<FormContextProviderProps> = ({ ch
     const [record, setRecord] = useState({} as Record);
     const [response, setResponse] = useState('');
     const [party, setParty] = useState([] as Record[]);
+    const [partyId, setPartyId] = useState('');
     const [guests, setGuests] = useState([] as GuestEntry[]);
     const [step, setStep] = useState('Search' as keyof Steps);
     const [modalOpen, setModalOpen] = useState(false);
@@ -47,6 +50,7 @@ export const RSVPFormContextProvider: React.FC<FormContextProviderProps> = ({ ch
         record, setRecord,
         response, setResponse,
         party, setParty,
+        partyId, setPartyId,
         guests, setGuests,
         step, setStep,
         modalOpen, setModalOpen

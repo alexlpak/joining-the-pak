@@ -5,7 +5,7 @@ import Input from '../../../components/Input';
 import Button from '../../../components/Button';
 import { FormFieldValue } from '../../../types/forms';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
-import { getRSVPByFirstAndLastName } from '../../../db/airtable';
+import { getRSVPByFirstAndLastName } from '../../../api/guests';
 import { useRSVPFormContext } from '../../../contexts/RSVPFormContext';
 
 interface FormValue {

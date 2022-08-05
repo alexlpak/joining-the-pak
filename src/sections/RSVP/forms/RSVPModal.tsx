@@ -8,7 +8,7 @@ import { getNameFromRecord } from '../../../helper/form';
 import { useRSVPFormContext } from '../../../contexts/RSVPFormContext';
 import Button, { ButtonWrapper } from '../../../components/Button';
 import { faPaperPlane } from '@fortawesome/free-solid-svg-icons';
-import { Record, RSVPResponse, updateEntries } from '../../../db/airtable';
+import { createNewEntries, Record, RSVPResponse, updateGuests } from '../../../api/guests';
 import { renderConfetti } from '../../../utilities/confetti';
 
 const LabelWrapper = styled.div`
@@ -26,48 +26,70 @@ const Label: React.FC<LabelProps> = ({ children }) => {
 };
 
 const RSVPModal: React.FC = () => {
-    const { record, response, party, guests, setModalOpen, setStep } = useRSVPFormContext();
+    const { record, response, party, partyId, guests, setModalOpen, setStep } = useRSVPFormContext();
     const [loading, setLoading] = useState(false);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        const guestRecords: Record[] = guests.map(guest => {
-            const guestRecord = party.filter(partyGuest => {
-                const { firstName, lastName } = partyGuest.fields;
-                return firstName === guest.firstName && lastName === guest.lastName;
+
+        if (party.length) {
+            const guestRecords: Record[] = guests.map(guest => {
+                const guestRecord = party.filter(partyGuest => {
+                    const { firstName, lastName } = partyGuest.fields;
+                    return firstName === guest.firstName && lastName === guest.lastName;
+                });
+    
+                delete guestRecord[0].createdTime;
+    
+                return {
+                    ...guestRecord[0],
+                    fields: {
+                        ...guestRecord[0].fields,
+                        response: response as RSVPResponse
+                    }
+                } as Record;
             });
-
-            delete guestRecord[0].createdTime;
-
-            return {
-                ...guestRecord[0],
+            const userRecord = {
+                ...record,
                 fields: {
-                    ...guestRecord[0].fields,
+                    ...record.fields,
                     response: response as RSVPResponse
                 }
             };
-        });
-        const userRecord = {
-            ...record,
-            fields: {
-                response: response as RSVPResponse
-            }
-        };
-        delete userRecord.createdTime;
-        guestRecords.push(userRecord);
-
-        setLoading(true);
-        const updated = await updateEntries(guestRecords);
-        setLoading(false);
-
-        if (updated && updated.status === 200) {
-            renderConfetti();
-            setModalOpen(false);
-            setStep('ThankYou');
+            delete userRecord.createdTime;
+            guestRecords.push(userRecord);
+    
+            setLoading(true);
+            const updated = await updateGuests(guestRecords);
+            setLoading(false);
+    
+            if (updated && updated.status === 200) {
+                response === 'Yes' && renderConfetti();
+                setModalOpen(false);
+                setStep('ThankYou');
+            };
         }
-        else {
-
-        };
+        else if (!party.length && guests) {
+            const records = guests.map(guest => ({ fields: guest }));
+            const userRecord = {
+                ...record,
+                fields: {
+                    ...record.fields,
+                    partyId: partyId,
+                    response: response as RSVPResponse
+                }
+            };
+            delete userRecord.createdTime;
+            setLoading(true);
+            const newEntries = await createNewEntries(records);
+            const updatedEntry = await updateGuests([userRecord]);
+            setLoading(false);
+            if (newEntries.status === 200 && updatedEntry.status === 200) {
+                response === 'Yes' && renderConfetti();
+                setModalOpen(false);
+                setStep('ThankYou');
+            };
+        }
     };
 
     return (

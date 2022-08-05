@@ -57,8 +57,14 @@ const ButtonSelect: React.FC<ButtonSelectProps> = ({ onChange, name, options, mu
 
     const handleSelectAllClick = () => {
         if (Array.isArray(value)) {
-            if (allOptionsSelected) setValue([]);
-            else setValue(options);
+            if (allOptionsSelected) {
+                setValue(() => []);
+                onChange({ [name]: [] });
+            }
+            else {
+                setValue(() => options);
+                onChange({ [name]: options });
+            };
         };
     };
 

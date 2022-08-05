@@ -67,7 +67,8 @@ const Input: React.FC<InputProps> = ({ initValue, onChange, name, placeholder, r
 
     useEffect(() => {
         if (onChange) onChange({ [name]: value });
-    }, [value, onChange, name]);
+        // eslint-disable-next-line
+    }, [value]);
 
     const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
         const { value } = e.target;

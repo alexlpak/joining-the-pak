@@ -7,6 +7,7 @@ import { IconProp } from '@fortawesome/fontawesome-svg-core';
 
 interface ButtonStyledProps {
     $secondary?: boolean;
+    $noBorder?: boolean;
 };
 
 export const ButtonWrapper = styled.div`
@@ -71,14 +72,15 @@ interface ButtonProps {
     icon?: IconProp;
     iconVisible?: boolean;
     disabled?: boolean;
+    noBorder?: boolean;
     onClick?: () => void;
     secondary?: boolean;
     type?: 'button' | 'submit';
 };
 
-const Button: React.FC<ButtonProps> = ({ children, disabled, loading, as, icon, type = 'button', secondary, iconVisible = true, ...rest }) => {
+const Button: React.FC<ButtonProps> = ({ children, disabled, loading, as, noBorder, icon, type = 'button', secondary, iconVisible = true, ...rest }) => {
     return (
-        <ButtonStyled disabled={disabled || loading} as={as} type={type} $secondary={secondary} {...rest}>
+        <ButtonStyled $noBorder={noBorder} disabled={disabled || loading} as={as} type={type} $secondary={secondary} {...rest}>
             {!loading && children}
             {loading && <LoaderIcon />}
             {icon && !loading && iconVisible && <FontAwesomeIcon icon={icon} />}

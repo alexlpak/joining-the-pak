@@ -3,22 +3,30 @@ import Form from '../../../components/Form';
 import ButtonSelect from '../../../components/ButtonSelect';
 import Button, { ButtonWrapper } from '../../../components/Button';
 import Typography from '../../../components/Typography';
-import { getRSVPByPartyId } from '../../../db/airtable';
+import { getRSVPByPartyId } from '../../../api/guests';
 import { useRSVPFormContext } from '../../../contexts/RSVPFormContext';
+import { faPaperPlane } from '@fortawesome/free-solid-svg-icons';
 
 interface FormValue {
     response: 'Yes' | 'No' | '';
 };
 
 const RSVPResponse: React.FC = () => {
-    const { record, setStep, setResponse, setParty } = useRSVPFormContext();
+    const { record, setStep, setResponse, setParty, setModalOpen } = useRSVPFormContext();
 
     const initValue: FormValue = {
         response: ''
     };
 
+    const { allowedGuests } = record.fields;
+
     const [value, setValue] = useState(initValue);
     const [loading, setLoading] = useState(false);
+
+    const handleSubmitClick = () => {
+        setResponse(value.response);
+        setModalOpen(true);
+    };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -30,7 +38,7 @@ const RSVPResponse: React.FC = () => {
             setParty(party);
             setStep('Party');
         }
-        else {
+        else if (!party.length && (allowedGuests && allowedGuests > 0)) {
             setStep('Guests');
         };
     };
@@ -53,14 +61,23 @@ const RSVPResponse: React.FC = () => {
                 >
                     <Typography bold>Back</Typography>
                 </Button>
-                <Button
+                {((!!record.fields.partyId) || (!!allowedGuests && value.response !== 'No')) && <Button
                     loading={loading}
                     secondary
                     type='submit'
                     disabled={!value.response}
                 >
                     <Typography bold>Next</Typography>
-                </Button>
+                </Button>}
+                {((!allowedGuests && !record.fields.partyId) || (!!allowedGuests && value.response === 'No')) && <Button
+                    loading={loading}
+                    secondary
+                    onClick={handleSubmitClick}
+                    disabled={!value.response}
+                    icon={faPaperPlane}
+                >
+                    <Typography bold>Submit</Typography>
+                </Button>}
             </ButtonWrapper>
         </Form>
     );

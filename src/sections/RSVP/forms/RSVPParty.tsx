@@ -4,7 +4,7 @@ import Button, { ButtonWrapper } from '../../../components/Button';
 import ButtonSelect from '../../../components/ButtonSelect';
 import { useRSVPFormContext } from '../../../contexts/RSVPFormContext';
 import Typography from '../../../components/Typography';
-import { Record } from '../../../db/airtable';
+import { Record } from '../../../api/guests';
 
 const RSVPParty: React.FC = () => {
     const { party, setGuests, setStep, setModalOpen } = useRSVPFormContext();

@@ -1,4 +1,4 @@
-import { Record } from '../db/airtable';
+import { Record } from '../api/guests';
 
 export const getNameFromRecord = (record: Record) => {
     const { firstName, lastName } = record.fields;
