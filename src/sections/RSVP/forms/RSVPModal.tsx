@@ -29,8 +29,6 @@ const RSVPModal: React.FC = () => {
     const { record, response, party, partyId, guests, setModalOpen, setStep } = useRSVPFormContext();
     const [loading, setLoading] = useState(false);
 
-    const changedByName = `${record.fields.firstName} ${record.fields.lastName}`;
-
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
