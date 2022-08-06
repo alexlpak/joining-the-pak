@@ -3,12 +3,11 @@ import ResetStyle from './styles/Reset.styled';
 import { theme } from './styles/theme';
 import { ThemeProvider } from 'styled-components';
 import Header from './sections/Header/Header';
-import OurStorySection from './sections/OurStory';
-import CarouselSection from './sections/Carousel';
-import DetailsSection from './sections/Details';
-import RegistrySection from './sections/Registry';
-import RSVPSection from './sections/RSVP/RSVP';
+import Home from './pages/Home';
+import Admin from './pages/Admin/Admin';
 import Footer from './sections/Footer';
+import { Route, Routes, BrowserRouter as Router } from 'react-router-dom';
+import { AdminContextProvider } from './contexts/AdminContext';
 
 function App() {
   return (
@@ -16,13 +15,16 @@ function App() {
       <ResetStyle />
       <GlobalStyle />
       <ThemeProvider theme={theme}>
-        <Header />
-        <CarouselSection />
-        <OurStorySection />
-        <DetailsSection />
-        <RegistrySection />
-        <RSVPSection />
-        <Footer />
+        <AdminContextProvider>
+          <Router basename={process.env.PUBLIC_URL}>
+            <Header />
+            <Routes>
+                <Route path='/' element={<Home />} />
+                <Route path='/admin' element={<Admin />} />
+              </Routes>
+            <Footer />
+          </Router>
+        </AdminContextProvider>
       </ThemeProvider>
     </>
   );

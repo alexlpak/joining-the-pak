@@ -75,8 +75,8 @@ const Input: React.FC<InputProps> = ({ initValue, onChange, name, capitalize, pl
 
     const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
         const { value } = e.target;
-        const regex = /^[A-Za-z]{0,15}$/g;
-        const validInput = regex.test(value)
+        const regex = /^[A-Za-z0-9]{0,15}$/g;
+        const validInput = regex.test(value);
         if (validInput) setValue(() => value);
     }, []);
 

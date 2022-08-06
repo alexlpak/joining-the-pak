@@ -50,7 +50,17 @@ const Typography: React.FC<TypographyProps> = ({ bold, fontFamily, type, childre
         <TypographyStyled $textAlign={textAlign} $fontFamily={fontFamily} $size={size} $italic={italic} $bold={bold} $type={type} $color={color}>
             {children}
         </TypographyStyled>
-    )
+    );
+};
+
+interface HeadingProps {
+    children: React.ReactNode | React.ReactNode[];
+};
+
+export const Heading: React.FC<HeadingProps> = ({ children }) => {
+    return (
+        <Typography fontFamily='quincy-cf' size='1.5rem' bold>{children}</Typography>
+    );
 };
 
 export default Typography;
