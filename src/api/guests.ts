@@ -1,19 +1,22 @@
 import axios from 'axios';
 
-const requestURL = `https://api.airtable.com/v0/appZEyPrBKugppqwn/guest-list`;
+const requestURL = `https://api.airtable.com/v0/appZEyPrBKugppqwn/tblDVFDWh4XLMIcC3`;
 const authHeader = { Authorization: `Bearer ${process.env.REACT_APP_AIRTABLE_API_KEY}` };
 
 const baseURL = `https://joining-the-pak.herokuapp.com`;
+// const baseURL = `http://localhost:5505`;
+
 
 export type RSVPResponse = 'Yes' | 'No' | '';
 
 export type GuestEntry = {
-    firstName?: string;
-    lastName?: string;
+    firstName: string;
+    lastName: string;
     partyId?: string;
     allowedGuests?: number;
     response?: RSVPResponse;
     type?: 'Invited' | 'Guest';
+    changedBy?: string;
     dateModified?: string;
 };
 
@@ -28,34 +31,38 @@ export type Record = {
 export type RequestResponse = {
     data?: Record[];
     status?: number;
-}
+};
+
+export type FetchResponse = {
+    records?: Record[];
+};
 
 export const getDataFromTable = async () => {
-    return await fetch(`${baseURL}/get-guests`).then(res => res.json()).then(data => data) as Record[];
+    return await fetch(`${baseURL}/get-guests`).then(res => res.json()).then(data => data) as FetchResponse;
 };
 
-export const getRSVPByFirstAndLastName = async (firstName: string | undefined, lastName: string | undefined) => {
-    if (!firstName && !lastName) return false;
-    const filterRequestURL = `${requestURL}?filterByFormula=AND(firstName="${firstName}", lastName="${lastName}")`;
-    try {
-        const response = await axios({ method: 'get', url: filterRequestURL, headers: authHeader });
-        const { records } = response.data;
-        return records;
-    }
-    catch { return [] };
-};
-
-export const getRSVPByPartyId = async (partyId: string | undefined) => {
-    if (!partyId) return [];
-    const filterRequestURL = `${requestURL}?filterByFormula={partyId}="${partyId}"`;
-    try {
-        const response = await axios({ method: 'get', url: filterRequestURL, headers: authHeader });
-        const { records } = response.data;
-        return records;
-    }
-    catch {
-        return [];
+export const getRSVPByFirstAndLastName = async (first: string , last: string) => {
+    const response: FetchResponse = await getDataFromTable();
+    if (response.records) {
+        const results = response.records.filter(record => {
+            const { firstName, lastName } = record.fields;
+            return (firstName.toLowerCase() === first.toLowerCase()) && (lastName.toLowerCase() === last.toLowerCase());
+        });
+        return results;
     };
+    return [];
+};
+
+export const getRSVPByPartyId = async (id: string) => {
+    const response: FetchResponse = await getDataFromTable();
+    if (response.records) {
+        const results = response.records.filter(record => {
+            const { partyId } = record.fields;
+            return partyId === id;
+        });
+        return results;
+    };
+    return [];
 };
 
 export const updateGuests = async (records: Record[]) => {

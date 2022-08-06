@@ -9,7 +9,7 @@ import Typography from '../../../components/Typography';
 import { useRSVPFormContext } from '../../../contexts/RSVPFormContext';
 import { FormFieldValue } from '../../../types/forms';
 import { GuestEntry } from '../../../api/guests';
-import { generateRandomString } from '../../../helper/text';
+import { capitalizeString, generateRandomString } from '../../../helper/text';
 
 const GuestWrapper = styled.ul`
     display: flex;
@@ -85,7 +85,7 @@ const RSVPGuests: React.FC = () => {
 
     const addGuest = () => {
         const { firstName, lastName } = value;
-        const name: Guest = `${firstName} ${lastName}`;
+        const name: Guest = `${capitalizeString(firstName)} ${capitalizeString(lastName)}`;
         if (firstName && lastName) {
             setUserGuests((prev) => [...prev, name]);
             setValue(initValue);
@@ -115,6 +115,7 @@ const RSVPGuests: React.FC = () => {
                 placeholder='First Name'
                 onChange={handleChange}
                 initValue={value.firstName}
+                capitalize
             />}
             {userGuests.length !== allowedGuests && <Input
                 type='text'
@@ -122,6 +123,7 @@ const RSVPGuests: React.FC = () => {
                 placeholder='Last Name'
                 onChange={handleChange}
                 initValue={value.lastName}
+                capitalize
             />}
             <Button
                 icon={faPlus}

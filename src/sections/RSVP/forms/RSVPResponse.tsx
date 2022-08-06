@@ -32,13 +32,16 @@ const RSVPResponse: React.FC = () => {
         e.preventDefault();
         setResponse(value.response);
         setLoading(true);
-        const party = await getRSVPByPartyId(record.fields.partyId);
-        setLoading(false);
-        if (party.length) {
-            setParty(party);
-            setStep('Party');
+        const { partyId } = record.fields;
+        if (partyId) {
+            const party = await getRSVPByPartyId(partyId);
+            setLoading(false);
+            if (party.length) {
+                setParty(party);
+                setStep('Party');
+            }
         }
-        else if (!party.length && (allowedGuests && allowedGuests > 0)) {
+        else if (!partyId && (allowedGuests && allowedGuests > 0)) {
             setStep('Guests');
         };
     };
@@ -69,7 +72,7 @@ const RSVPResponse: React.FC = () => {
                 >
                     <Typography bold>Next</Typography>
                 </Button>}
-                {((!allowedGuests && !record.fields.partyId) || (!!allowedGuests && value.response === 'No')) && <Button
+                {((!allowedGuests && !record.fields.partyId) || (!!allowedGuests && !record.fields.partyId && value.response === 'No')) && <Button
                     loading={loading}
                     secondary
                     onClick={handleSubmitClick}

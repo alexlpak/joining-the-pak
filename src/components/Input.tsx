@@ -4,6 +4,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FormFieldValue } from '../types/forms';
+import { capitalizeString } from '../helper/text';
 
 const InputStyled = styled.input`
     font-family: quincy-cf;
@@ -54,9 +55,10 @@ interface InputProps {
     name: string;
     placeholder: string;
     required?: boolean;
+    capitalize?: boolean;
 };
 
-const Input: React.FC<InputProps> = ({ initValue, onChange, name, placeholder, required, ...rest }) => {
+const Input: React.FC<InputProps> = ({ initValue, onChange, name, capitalize, placeholder, required, ...rest }) => {
     const theme = useTheme();
 
     const [value, setValue] = useState(initValue || '');
@@ -66,7 +68,8 @@ const Input: React.FC<InputProps> = ({ initValue, onChange, name, placeholder, r
     }, [initValue]);
 
     useEffect(() => {
-        if (onChange) onChange({ [name]: value });
+        const update = capitalize ? capitalizeString(value) : value;
+        if (onChange) onChange({ [name]: update });
         // eslint-disable-next-line
     }, [value]);
 

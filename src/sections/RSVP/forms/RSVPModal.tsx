@@ -29,6 +29,8 @@ const RSVPModal: React.FC = () => {
     const { record, response, party, partyId, guests, setModalOpen, setStep } = useRSVPFormContext();
     const [loading, setLoading] = useState(false);
 
+    const changedByName = `${record.fields.firstName} ${record.fields.lastName}`;
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
@@ -45,6 +47,7 @@ const RSVPModal: React.FC = () => {
                     ...guestRecord[0],
                     fields: {
                         ...guestRecord[0].fields,
+                        changedBy: record.id,
                         response: response as RSVPResponse
                     }
                 } as Record;
@@ -53,6 +56,7 @@ const RSVPModal: React.FC = () => {
                 ...record,
                 fields: {
                     ...record.fields,
+                    changedBy: record.id,
                     response: response as RSVPResponse
                 }
             };
@@ -69,13 +73,21 @@ const RSVPModal: React.FC = () => {
                 setStep('ThankYou');
             };
         }
-        else if (!party.length && guests) {
-            const records = guests.map(guest => ({ fields: guest }));
+        else if (!party.length && guests.length) {
+            const records = guests.map(guest => {
+                return {
+                    fields: {
+                        ...guest,
+                        changedBy: record.id
+                    }
+                };
+            });
             const userRecord = {
                 ...record,
                 fields: {
                     ...record.fields,
                     partyId: partyId,
+                    changedBy: record.id,
                     response: response as RSVPResponse
                 }
             };
@@ -90,6 +102,25 @@ const RSVPModal: React.FC = () => {
                 setStep('ThankYou');
             };
         }
+        else {
+            setLoading(true);
+            const userRecord = {
+                ...record,
+                fields: {
+                    ...record.fields,
+                    changedBy: record.id,
+                    response: response as RSVPResponse
+                }
+            };
+            delete userRecord.createdTime;
+            const updatedEntry = await updateGuests([userRecord]);
+            setLoading(false);
+            if (updatedEntry.status === 200 && updatedEntry.status === 200) {
+                response === 'Yes' && renderConfetti();
+                setModalOpen(false);
+                setStep('ThankYou');
+            };
+        };
     };
 
     return (

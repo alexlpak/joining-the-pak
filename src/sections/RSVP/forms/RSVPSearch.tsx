@@ -34,7 +34,7 @@ const RSVPSearch: React.FC = () => {
         setLoading(true);
         const rsvp = await getRSVPByFirstAndLastName(value.firstName, value.lastName);
         setLoading(false);
-        if (rsvp.length) {
+        if (rsvp && rsvp.length) {
             setError('');
             setRecord(rsvp[0]);
             setStep('Response');
@@ -55,6 +55,7 @@ const RSVPSearch: React.FC = () => {
                 initValue={value.firstName}
                 onChange={handleChange}
                 required
+                capitalize
             />
             <Input
                 type='text'
@@ -63,6 +64,7 @@ const RSVPSearch: React.FC = () => {
                 initValue={value.lastName}
                 onChange={handleChange}
                 required
+                capitalize
             />
             <Button
                 type='submit'
