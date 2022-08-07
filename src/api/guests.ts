@@ -28,17 +28,62 @@ export type Record = {
     createdTime?: string;
 };
 
+export type FetchedRecord = {
+    id: string;
+    fields: GuestEntry;
+    createdTime: string;
+};
+
 export type RequestResponse = {
     data?: Record[];
     status?: number;
 };
 
 export type FetchResponse = {
-    records?: Record[];
+    records: FetchedRecord[];
 };
 
 export const getDataFromTable = async () => {
     return await fetch(`${baseURL}/get-guests`).then(res => res.json()).then(data => data) as FetchResponse;
+};
+
+export const getMetrics = async () => {
+    const response: FetchResponse = await getDataFromTable();
+    if (response.records) {
+        const invited = response.records.filter(record => {
+            const { type } = record.fields;
+            return type === 'Invited';
+        });
+        const guests = response.records.filter(record => {
+            const { type } = record.fields;
+            return type === 'Guest';
+        });
+        const yesResponse = response.records.filter(record => {
+            const { response } = record.fields;
+            return response === 'Yes';
+        });
+        const noReponse = response.records.filter(record => {
+            const { response } = record.fields;
+            return response === 'No';
+        });
+        const pendingResponse = response.records.filter(record => {
+            const { response } = record.fields;
+            return !response;
+        });
+        const totalResponse = response.records.filter(record => {
+            const { response } = record.fields;
+            return response;
+        });
+        return {
+            invited: invited.length,
+            guests: guests.length,
+            yesResponse: yesResponse.length,
+            noResponse: noReponse.length,
+            pendingResponse: pendingResponse.length,
+            totalResponse: totalResponse.length
+        };
+    };
+    return false;
 };
 
 export const getRSVPByFirstAndLastName = async (first: string , last: string) => {

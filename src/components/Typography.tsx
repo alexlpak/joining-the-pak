@@ -55,11 +55,18 @@ const Typography: React.FC<TypographyProps> = ({ bold, fontFamily, type, childre
 
 interface HeadingProps {
     children: React.ReactNode | React.ReactNode[];
+    color?: string;
 };
 
-export const Heading: React.FC<HeadingProps> = ({ children }) => {
+export const Heading: React.FC<HeadingProps> = ({ children, color }) => {
     return (
-        <Typography fontFamily='quincy-cf' size='1.5rem' bold>{children}</Typography>
+        <Typography color={color} fontFamily='quincy-cf' size='2rem' bold>{children}</Typography>
+    );
+};
+
+export const Subheading: React.FC<HeadingProps> = ({ children, color }) => {
+    return (
+        <Typography color={color} fontFamily='quincy-cf' size='1.5rem' bold>{children}</Typography>
     );
 };
 
