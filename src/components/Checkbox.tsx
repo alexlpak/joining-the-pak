@@ -44,6 +44,7 @@ const Checkbox: React.FC<CheckboxProps> = ({ name, initValue, onChange, onClick,
 
     useEffect(() => {
         if (onChange && name) onChange({ [name]: checked });
+        // eslint-disable-next-line
     }, [checked]);
 
     useEffect(() => {

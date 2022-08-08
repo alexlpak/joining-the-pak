@@ -1,16 +1,16 @@
-import { faCheck, faGear, faWrench, faXmark } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faGear, faXmark } from '@fortawesome/free-solid-svg-icons';
 import React, { useEffect, useState } from 'react';
 import styled, { css } from 'styled-components';
 import { useAdminContext } from '../../contexts/AdminContext';
 import { FormFieldValue } from '../../types/forms';
-import Button, { ButtonWrapper } from '../Button';
+import Button from '../Button';
 import Checkbox from '../Checkbox';
-import Typography from '../Typography';
-import Form from '../Form';
 import Input from '../Input';
 import EditForm from './EditForm';
 import DeleteForm from './DeleteForm';
+import { GuestEntry } from '../../api/guests';
+import { RemUnit } from '../../types/styling';
+import { getFirstAndLastNameByRecordId } from '../../helper/guests';
 
 const TableWrapper = styled.div`
     display: flex;
@@ -80,16 +80,46 @@ const TableActionsWrapper = styled.div`
     align-items: center;
 `;
 
+interface TableColumn {
+    header?: {
+        content: React.ReactNode | React.ReactNode[];
+    };
+    body?: {
+        content: React.ReactNode | React.ReactNode[];
+    };
+    width: RemUnit;
+    fieldName?: keyof GuestEntry;
+    utilityName?: 'select' | 'edit' | 'delete';
+    centered?: boolean;
+};
+
+interface TableData {
+    columns: TableColumn[];
+};
+
+const tableData: TableData = {
+    columns: [
+        { utilityName: 'select', width: '5rem', centered: true },
+        { header: { content: 'First Name' }, fieldName: 'firstName', width: '8rem' },
+        { header: { content: 'Last Name' }, fieldName: 'lastName', width: '8rem' },
+        { header: { content: 'Response' }, fieldName: 'response', width: '6rem', centered: true },
+        { header: { content: 'Party ID' }, fieldName: 'partyId', width: '8rem', centered: true },
+        { header: { content: 'Allowed Guests' }, fieldName: 'allowedGuests', width: '6rem', centered: true },
+        { header: { content: 'Type' }, fieldName: 'type', width: '8rem', centered: true },
+        { header: { content: 'Date Modified' }, fieldName: 'dateModified', width: '8rem', centered: true },
+        { header: { content: 'Changed By' }, fieldName: 'changedBy', width: '8rem', centered: true },
+        { utilityName: 'edit', header: { content: 'Edit' }, width: '8rem', centered: true },
+        { utilityName: 'delete', header: { content: 'Delete' }, width: '8rem', centered: true }
+    ]
+};
+
 const Table: React.FC = () => {
-    const [tableRecords, setTableRecords] = useState([]);
-
-    const { records, getRecords } = useAdminContext();
+    const { records, getRecords, setModalOpen, setModalContents } = useAdminContext();
     const [selected, setSelected] = useState([] as string[]);
-
-    const { setModalOpen, setModalContents } = useAdminContext();
 
     useEffect(() => {
         getRecords();
+        // eslint-disable-next-line
     }, []);
 
     const handleCheck = (value: FormFieldValue) => {
@@ -101,10 +131,6 @@ const Table: React.FC = () => {
             else return prev;
         });
     };
-
-    useEffect(() => {
-        console.log(selected);
-    }, [selected]);
 
     const selectAll = (value: FormFieldValue) => {
         const checked: boolean = Object.values(value)[0];
@@ -159,54 +185,37 @@ const Table: React.FC = () => {
             </TableActionsWrapper>
             <TableWrapper>
                 <Header>
-                    <HeaderCell $width='5rem'>
-                        <Checkbox secondary initValue={false} name='selectAll' onChange={selectAll} />
-                    </HeaderCell>
-                    <HeaderCell $width='8rem'>First Name</HeaderCell>
-                    <HeaderCell $width='8rem'>Last Name</HeaderCell>
-                    <HeaderCell $width='6rem'>Response</HeaderCell>
-                    <HeaderCell $width='8rem'>Party ID</HeaderCell>
-                    <HeaderCell $width='6rem'>Allowed Guests</HeaderCell>
-                    <HeaderCell $width='8rem'>Type</HeaderCell>
-                    <HeaderCell $width='8rem'>Last Modified</HeaderCell>
-                    <HeaderCell $width='8rem'>Changed By</HeaderCell>
-                    <HeaderCell $width='8rem'>Edit</HeaderCell>
-                    <HeaderCell $width='8rem'>Delete</HeaderCell>
+                    {tableData.columns.map(column => {
+                        return (
+                            <HeaderCell key={`header-${column.fieldName || column.utilityName}`} $centered={column.centered} $width={column.width}>
+                                {column.header && column.header.content}
+                                {column.utilityName === 'select' && <Checkbox secondary name='selectAll' initValue={false} onChange={selectAll} />}
+                            </HeaderCell>
+                        );
+                    })}
                 </Header>
-                {!!records.length && records.sort((a, b) => {
-                    const current = a.fields.partyId || '';
-                    const next = b.fields.partyId || '';
-                    return next.localeCompare(current);
-                }).map(record => {
-                    const { firstName, lastName, response, partyId, allowedGuests, type, dateModified, changedBy } = record.fields;
-                    const changedByRecord = records.find(record => record.id === changedBy);
-                    const changedByName = `${changedByRecord?.fields.firstName} ${changedByRecord?.fields.lastName}`;
+                {records.length > 0 && records.map(record => {
+                    const { changedBy, dateModified } = record.fields;
+                    const changedByName = changedBy && getFirstAndLastNameByRecordId(records, changedBy);
+                    const dateString = dateModified && `${new Date(dateModified).toDateString()} ${new Date(dateModified).toLocaleTimeString()}`;
+                    const componentMap: { [key in GuestEntry | any]: any } = {
+                        'changedBy': changedByName,
+                        'dateModified': dateString,
+                    };
                     return (
                         <Row key={record.id} $selected={selected.includes(record.id)}>
-                            <Cell $centered $width='5rem'><Checkbox initValue={selected.includes(record.id)} name={record.id || ''} onChange={handleCheck} /></Cell>
-                            <Cell $width='8rem'>{firstName}</Cell>
-                            <Cell $width='8rem'>{lastName}</Cell>
-                            <Cell $centered $width='6rem'>
-                                {response === 'Yes' && <FontAwesomeIcon icon={faCheck} />}
-                                {response === 'No' && <FontAwesomeIcon icon={faXmark} />}
-                            </Cell>
-                            <Cell $centered $width='8rem'>{partyId}</Cell>
-                            <Cell $centered $width='6rem'>{allowedGuests}</Cell>
-                            <Cell $centered $width='8rem'>{type}</Cell>
-                            <Cell $centered $width='8rem'>{dateModified && `${new Date(dateModified).toDateString()} ${new Date(dateModified).toLocaleTimeString()}`}</Cell>
-                            <Cell $centered $width='8rem'>
-                                {changedByRecord ? changedByName : ''}
-                            </Cell>
-                            <Cell $centered $width='8rem'>
-                                <Button onClick={() => openSingleEditModal(record.id)}>
-                                    <Typography bold>Edit</Typography>
-                                </Button>
-                            </Cell>
-                            <Cell $centered $width='8rem'>
-                                <Button onClick={() => openSingleDeleteModal(record.id)}>
-                                    <Typography bold>Delete</Typography>
-                                </Button>
-                            </Cell>
+                            {tableData.columns.map(column => {
+                                const recordData = column.fieldName && record.fields[column.fieldName];
+                                const { fieldName } = column;
+                                return (
+                                    <Cell $centered={column.centered} $width={column.width} key={`cell-${column.fieldName || column.utilityName}`}>
+                                        {fieldName && fieldName in componentMap ? componentMap[fieldName] : recordData}
+                                        {column.utilityName === 'select' && <Checkbox initValue={selected.includes(record.id)} name={record.id || ''} onChange={handleCheck} />}
+                                        {column.utilityName === 'edit' && <Button onClick={() => openSingleEditModal(record.id)}>Edit</Button>}
+                                        {column.utilityName === 'delete' && <Button onClick={() => openSingleDeleteModal(record.id)}>Delete</Button>}
+                                    </Cell>
+                                );
+                            })}
                         </Row>
                     );
                 })}
