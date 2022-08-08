@@ -4,7 +4,6 @@ import { useTheme } from 'styled-components';
 import { Heading } from '../../../components/Typography';
 import styled from 'styled-components';
 import Overview from './metrics/Overview';
-import ProgressBar from '../../../components/ProgressBar';
 import Table from '../../../components/Table/Table';
 
 const MetricCard = styled.div`
@@ -19,15 +18,6 @@ const MetricCard = styled.div`
     background-color: white;
     color: black;
 `;
-
-type Metrics = {
-    invited: number;
-    guests: number;
-    yesResponse: number;
-    noResponse: number;
-    pendingResponse: number;
-    totalResponse: number;
-};
 
 const ManageRSVP: React.FC = () => {
     const theme = useTheme();

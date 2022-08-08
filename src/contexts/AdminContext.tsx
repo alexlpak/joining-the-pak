@@ -1,4 +1,4 @@
-import React, { useContext, useState, createContext, useEffect } from 'react';
+import React, { useContext, useState, createContext } from 'react';
 import { getDataFromTable, FetchedRecord } from '../api/guests';
 import Modal from '../components/Modal';
 import Typography from '../components/Typography';

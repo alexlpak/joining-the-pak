@@ -16,7 +16,7 @@ const RecordWrapper = styled.div`
 `;
 
 const DeleteForm: React.FC<DeleteFormProps> = ({ recordIds }) => {
-    const { records, getRecords, setModalContents, setModalOpen } = useAdminContext();
+    const { records, setModalContents, setModalOpen } = useAdminContext();
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();

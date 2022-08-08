@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import Modal from '../Modal';
 import Form from '../Form';
 import Input from '../Input';
 import Button, { ButtonWrapper } from '../Button';
@@ -7,7 +6,6 @@ import { useAdminContext } from '../../contexts/AdminContext';
 import { FormFieldValue } from '../../types/forms';
 import Typography from '../Typography';
 import { faPaperPlane } from '@fortawesome/free-solid-svg-icons';
-import { updateGuests } from '../../api/guests';
 import styled from 'styled-components';
 
 interface EditFormProps {
@@ -22,7 +20,7 @@ const EditRecordsWrapper = styled.div`
 const EditForm: React.FC<EditFormProps> = ({ recordIds }) => {
     const [value, setValue] = useState([]);
 
-    const { setModalOpen, setModalContents, records } = useAdminContext();
+    const { setModalOpen, records } = useAdminContext();
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();

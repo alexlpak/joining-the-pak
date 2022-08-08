@@ -4,8 +4,7 @@ import ManageRSVP from './ManageRSVP/ManageRSVP';
 import Passcode from './Passcode';
 
 const Admin: React.FC = () => {
-    // const { validated } = useAdminContext();
-    const validated = true;
+    const { validated } = useAdminContext();
 
     return (
         <>
