@@ -5,11 +5,12 @@ import Passcode from './Passcode';
 
 const Admin: React.FC = () => {
     const { validated } = useAdminContext();
+    const auth = process.env.NODE_ENV === 'development' ? true : validated;
 
     return (
         <>
-            {!validated && <Passcode />}
-            {validated && <ManageRSVP />}
+            {!auth && <Passcode />}
+            {auth && <ManageRSVP />}
         </>
     );
 };
