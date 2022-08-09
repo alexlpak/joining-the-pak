@@ -1,20 +1,19 @@
 import React from 'react';
 import styled from 'styled-components';
+import Typography from './Typography';
 
 interface PercentProps {
     $percent: number;
 };
 
-const ProgressText = styled.span`
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    white-space: nowrap;
+const ProgressBarWrapper = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: .5rem;
 `;
 
 const ProgressBarStyled = styled.div`
-    position: relative;
     display: flex;
     width: 100%;
     height: 2.5rem;
@@ -40,10 +39,12 @@ interface ProgressBarProps {
 
 const ProgressBar: React.FC<ProgressBarProps> = ({ percent }) => {
     return (
-        <ProgressBarStyled>
-            <Filled $percent={percent} />
-            <ProgressText>{percent}% Responded</ProgressText>
-        </ProgressBarStyled>
+        <ProgressBarWrapper>
+            <ProgressBarStyled>
+                <Filled $percent={percent} />
+            </ProgressBarStyled>
+            <Typography italic>{percent}% Responded</Typography>
+        </ProgressBarWrapper>
     );
 };
 

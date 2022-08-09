@@ -23,11 +23,16 @@ const InputStyled = styled.input`
     transition: box-shadow ${theme.animation.speed}ms ${theme.animation.curve};
 `;
 
-const InputWrapperStyled = styled.div`
+interface InputWrapperStyledProps {
+    $width?: string;
+}
+
+const InputWrapperStyled = styled.div<InputWrapperStyledProps>`
     position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
+    width: ${({ $width }) => $width};
 `;
 
 const ClearButtonStyled = styled.button.attrs({
@@ -56,9 +61,10 @@ interface InputProps {
     placeholder: string;
     required?: boolean;
     capitalize?: boolean;
+    width?: string;
 };
 
-const Input: React.FC<InputProps> = ({ initValue, onChange, name, capitalize, placeholder, required, ...rest }) => {
+const Input: React.FC<InputProps> = ({ initValue, onChange, width, name, capitalize, placeholder, required, ...rest }) => {
     const theme = useTheme();
 
     const [value, setValue] = useState(initValue || '');
@@ -85,7 +91,7 @@ const Input: React.FC<InputProps> = ({ initValue, onChange, name, capitalize, pl
     };
 
     return (
-        <InputWrapperStyled>
+        <InputWrapperStyled $width={width}>
             <InputStyled
                 value={value}
                 onChange={handleChange}

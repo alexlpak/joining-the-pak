@@ -40,10 +40,11 @@ interface SectionContentsProps {
     $padding?: RemUnit;
     $gap?: RemUnit;
     $centered?: boolean;
+    $maxWidth?: string;
 };
 
 const SectionContents = styled.div<SectionContentsProps>`
-    max-width: 50rem;
+    max-width: ${({ $maxWidth }) => $maxWidth || '50rem'};
     width: 100%;
     padding: ${({ $padding }) => $padding || '2rem'};
     display: flex;
@@ -65,12 +66,13 @@ interface SectionProps {
     as?: React.ElementType;
     color?: string;
     children?: React.ReactNode | React.ReactNode[];
+    maxWidth?: string;
 };
 
-const Section: React.FC<SectionProps> = ({ id, as, padding, backgroundImage, gap, centered, color, children, ...rest }) => {
+const Section: React.FC<SectionProps> = ({ id, as, padding, maxWidth, backgroundImage, gap, centered, color, children, ...rest }) => {
     return (
         <SectionStyled as={as} id={id} {...rest} $color={color} $backgroundImage={backgroundImage}>
-            <SectionContents $padding={padding} $gap={gap} $centered={centered}>
+            <SectionContents $maxWidth={maxWidth} $padding={padding} $gap={gap} $centered={centered}>
                 {children}
             </SectionContents>
         </SectionStyled>

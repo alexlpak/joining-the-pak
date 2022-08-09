@@ -12,15 +12,23 @@ import { GuestEntry } from '../../api/guests';
 import { RemUnit } from '../../types/styling';
 import { getFirstAndLastNameByRecordId } from '../../helper/guests';
 
+const TableContentsWrapper = styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: center;
+`;
+
 const TableWrapper = styled.div`
     display: flex;
     flex-direction: column;
-    border-radius: .8rem;
+    border-radius: .5rem;
     border: 2px solid ${({ theme }) => theme.colors.main};
     box-shadow: 0px 0px 0px 2px white;
     background-color: white;
     color: black;
     overflow: hidden;
+    justify-content: center;
 `;
 
 interface RowProps {
@@ -91,34 +99,39 @@ interface TableColumn {
     fieldName?: keyof GuestEntry;
     utilityName?: 'select' | 'edit' | 'delete';
     centered?: boolean;
+    breakpoint?: number;
 };
 
-interface TableData {
-    columns: TableColumn[];
-};
+type TableData = TableColumn[];
 
-const tableData: TableData = {
-    columns: [
-        { utilityName: 'select', width: '5rem', centered: true },
-        { header: { content: 'First Name' }, fieldName: 'firstName', width: '8rem' },
-        { header: { content: 'Last Name' }, fieldName: 'lastName', width: '8rem' },
-        { header: { content: 'Response' }, fieldName: 'response', width: '6rem', centered: true },
-        { header: { content: 'Party ID' }, fieldName: 'partyId', width: '8rem', centered: true },
-        { header: { content: 'Allowed Guests' }, fieldName: 'allowedGuests', width: '6rem', centered: true },
-        { header: { content: 'Type' }, fieldName: 'type', width: '8rem', centered: true },
-        { header: { content: 'Date Modified' }, fieldName: 'dateModified', width: '8rem', centered: true },
-        { header: { content: 'Changed By' }, fieldName: 'changedBy', width: '8rem', centered: true },
-        { utilityName: 'edit', header: { content: 'Edit' }, width: '8rem', centered: true },
-        { utilityName: 'delete', header: { content: 'Delete' }, width: '8rem', centered: true }
-    ]
-};
+const tableData: TableData = [
+    { utilityName: 'select', width: '5rem', centered: true },
+    { header: { content: 'First Name' }, fieldName: 'firstName', width: '8rem' },
+    { header: { content: 'Last Name' }, fieldName: 'lastName', width: '8rem' },
+    { header: { content: 'Response' }, fieldName: 'response', width: '6rem', centered: true, breakpoint: 485 },
+    { header: { content: 'Party ID' }, fieldName: 'partyId', width: '8rem', centered: true, breakpoint: 1365 },
+    { header: { content: 'Allowed Guests' }, fieldName: 'allowedGuests', width: '6rem', centered: true, breakpoint: 865 },
+    { header: { content: 'Type' }, fieldName: 'type', width: '8rem', centered: true, breakpoint: 985 },
+    { header: { content: 'Date Modified' }, fieldName: 'dateModified', width: '8rem', centered: true, breakpoint: 1265 },
+    { header: { content: 'Changed By' }, fieldName: 'changedBy', width: '8rem', centered: true, breakpoint: 1115 },
+    { utilityName: 'edit', header: { content: 'Edit' }, width: '8rem', centered: true, breakpoint: 640 },
+    { utilityName: 'delete', header: { content: 'Delete' }, width: '8rem', centered: true, breakpoint: 765 }
+];
 
 const Table: React.FC = () => {
     const { records, getRecords, setModalOpen, setModalContents } = useAdminContext();
     const [selected, setSelected] = useState([] as string[]);
+    const [pageWidth, setPageWidth] = useState(window.innerWidth);
 
     useEffect(() => {
         getRecords();
+        const handleResize = () => {
+            setPageWidth(window.innerWidth);
+        };
+        window.addEventListener('resize', handleResize);
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
         // eslint-disable-next-line
     }, []);
 
@@ -177,15 +190,15 @@ const Table: React.FC = () => {
     };
 
     return (
-        <>
+        <TableContentsWrapper>
             <TableActionsWrapper>
-                <Input type='text' name='search' placeholder='Search' />
                 <Button disabled={!selected.length} icon={faGear} onClick={() => openBatchEditModal()}>Batch Edit</Button>
                 <Button disabled={!selected.length} icon={faXmark} onClick={() => openBatchDeleteModal()}>Batch Delete</Button>
             </TableActionsWrapper>
+            <Input type='text' name='search' placeholder='Search' width={pageWidth < 550 ? '100%' : '20rem'} />
             <TableWrapper>
                 <Header>
-                    {tableData.columns.map(column => {
+                    {tableData.filter(column => column.breakpoint ? pageWidth > column.breakpoint : true).map(column => {
                         return (
                             <HeaderCell key={`header-${column.fieldName || column.utilityName}`} $centered={column.centered} $width={column.width}>
                                 {column.header && column.header.content}
@@ -204,7 +217,7 @@ const Table: React.FC = () => {
                     };
                     return (
                         <Row key={record.id} $selected={selected.includes(record.id)}>
-                            {tableData.columns.map(column => {
+                            {tableData.filter(column => column.breakpoint ? pageWidth > column.breakpoint : true).map(column => {
                                 const recordData = column.fieldName && record.fields[column.fieldName];
                                 const { fieldName } = column;
                                 return (
@@ -220,7 +233,7 @@ const Table: React.FC = () => {
                     );
                 })}
             </TableWrapper>
-        </>
+        </TableContentsWrapper>
     );
 };
 
