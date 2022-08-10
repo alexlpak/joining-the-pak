@@ -1,4 +1,4 @@
-import { faGear, faXmark } from '@fortawesome/free-solid-svg-icons';
+import { faGear, faPen, faXmark } from '@fortawesome/free-solid-svg-icons';
 import React, { useEffect, useState } from 'react';
 import styled, { css } from 'styled-components';
 import { useAdminContext } from '../../contexts/AdminContext';
@@ -11,6 +11,7 @@ import DeleteForm from './DeleteForm';
 import { GuestEntry } from '../../api/guests';
 import { RemUnit } from '../../types/styling';
 import { getFirstAndLastNameByRecordId } from '../../helper/guests';
+import CreateForm from './CreateForm';
 
 const TableContentsWrapper = styled.div`
     display: flex;
@@ -133,6 +134,7 @@ const Table: React.FC = () => {
 
     useEffect(() => {
         getRecords();
+        console.log(records);
         const handleResize = () => {
             setPageWidth(window.innerWidth);
         };
@@ -165,6 +167,15 @@ const Table: React.FC = () => {
         const query = Object.values(value);
         setSearch(query[0]);
     };
+
+    const openCreateNewModal = () => {
+        setModalContents({
+            title: 'Create RSVP',
+            instructions: 'Please enter the information below to create a new record. Any fields left blank will not be updated.',
+            children: <CreateForm />
+        });
+        setModalOpen(true);
+    }
 
     const openBatchEditModal = () => {
         setModalContents({
@@ -237,6 +248,7 @@ const Table: React.FC = () => {
 
     return (
         <TableContentsWrapper>
+            <Button icon={faPen} onClick={() => openCreateNewModal()}>Create New</Button>
             <TableActionsWrapper>
                 <Button disabled={!selected.length} icon={faGear} onClick={() => openBatchEditModal()}>Batch Edit</Button>
                 <Button disabled={!selected.length} icon={faXmark} onClick={() => openBatchDeleteModal()}>Batch Delete</Button>

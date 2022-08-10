@@ -64,7 +64,7 @@ interface InputProps {
     width?: string;
 };
 
-const Input: React.FC<InputProps> = ({ initValue, onChange, width, name, capitalize, placeholder, required, ...rest }) => {
+const Input: React.FC<InputProps> = ({ initValue, onChange, type, width, name, capitalize, placeholder, required, ...rest }) => {
     const theme = useTheme();
 
     const [value, setValue] = useState(initValue || '');
@@ -74,8 +74,13 @@ const Input: React.FC<InputProps> = ({ initValue, onChange, width, name, capital
     }, [initValue]);
 
     useEffect(() => {
-        const update = capitalize ? capitalizeString(value) : value;
-        if (onChange) onChange({ [name]: update });
+        if (type === 'number') {
+            if (onChange) onChange({ [name]: parseInt(value) });
+        }
+        else if (typeof value === 'string') {
+            const update = capitalize ? capitalizeString(value) : value;
+            if (onChange) onChange({ [name]: update });
+        };
         // eslint-disable-next-line
     }, [value]);
 
@@ -102,7 +107,7 @@ const Input: React.FC<InputProps> = ({ initValue, onChange, width, name, capital
                 required={required}
                 {...rest}
             />
-            {value && <ClearButtonStyled onClick={handleClearButtonClick} tabIndex={-1}>
+            {!!value && <ClearButtonStyled onClick={handleClearButtonClick} tabIndex={-1}>
                 <FontAwesomeIcon icon={faXmark} color={theme.colors.main} />
             </ClearButtonStyled>}
         </InputWrapperStyled>

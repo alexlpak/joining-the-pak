@@ -119,7 +119,7 @@ const EditForm: React.FC<EditFormProps> = ({ recordIds }) => {
                 <Button secondary onClick={() => setModalOpen(false)} disabled={loading}>
                     <Typography bold>Cancel</Typography>
                 </Button>
-                <Button type='submit' icon={faPaperPlane} loading={loading} disabled={value.response ? !['Yes', 'No'].includes(value.response) : false}>
+                <Button type='submit' icon={faPaperPlane} loading={loading} disabled={loading}>
                     <Typography bold>Submit</Typography>
                 </Button>
             </ButtonWrapper>

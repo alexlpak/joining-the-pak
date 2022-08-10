@@ -130,6 +130,19 @@ export const updateGuests = async (records: Record[]) => {
     return response;
 };
 
+export const deleteGuests = async (recordIds: string[]) => {
+    const queryString = recordIds.map(id => {
+        return encodeURI(`records[]=${id}`);
+    });
+    const composedUrl = `${requestURL}?${queryString.join('&')}`;
+    const response = await axios({
+        method: 'delete',
+        url: composedUrl,
+        headers: authHeader
+    });
+    return response;
+};
+
 export const createNewEntries = async (records: Record[]) => {
     const updateRecords = records.map(record => {
         const output: Record = {
