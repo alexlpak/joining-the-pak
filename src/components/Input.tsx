@@ -105,6 +105,7 @@ const Input: React.FC<InputProps> = ({ initValue, onChange, type, width, name, c
                 name={name}
                 placeholder={placeholder}
                 required={required}
+                type={type}
                 {...rest}
             />
             {!!value && <ClearButtonStyled onClick={handleClearButtonClick} tabIndex={-1}>
