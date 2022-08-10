@@ -28,7 +28,7 @@ const DeleteForm: React.FC<DeleteFormProps> = ({ recordIds }) => {
             await deleteGuests(recordIds);
             setLoading(false);
             setModalOpen(false);
-            await getRecords();
+            getRecords();
         }
         catch {
             setError('Failed to delete record. Please try again later.');

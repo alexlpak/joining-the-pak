@@ -54,7 +54,7 @@ const ClearButtonStyled = styled.button.attrs({
 `;
 
 interface InputProps {
-    initValue?: string;
+    initValue?: string | number;
     onChange?: (value: FormFieldValue) => void;
     type: string;
     name: string;
@@ -67,15 +67,15 @@ interface InputProps {
 const Input: React.FC<InputProps> = ({ initValue, onChange, type, width, name, capitalize, placeholder, required, ...rest }) => {
     const theme = useTheme();
 
-    const [value, setValue] = useState(initValue || '');
+    const [value, setValue] = useState(initValue || (typeof initValue === 'number' ? 0 : ''));
     
     useEffect(() => {
-        setValue(initValue || '');
+        setValue(initValue || (typeof initValue === 'number' ? 0 : ''));
     }, [initValue]);
 
     useEffect(() => {
         if (type === 'number') {
-            if (onChange) onChange({ [name]: parseInt(value) });
+            if (onChange && typeof value === 'string') onChange({ [name]: parseInt(value) });
         }
         else if (typeof value === 'string') {
             const update = capitalize ? capitalizeString(value) : value;

@@ -23,6 +23,8 @@ const CreateForm: React.FC = () => {
         try {
             await createNewEntries([{ fields: {
                 ...value,
+                allowedGuests: value.allowedGuests || 0,
+                type: 'Invited',
                 changedBy: 'System'
             } }]);
             setLoading(false);

@@ -58,14 +58,15 @@ const SelectPlaceholder = styled.span`
 `;
 
 interface SelectProps {
+    initValue?: string | number;
     options: string[];
     name: string;
     onChange: (value: FormFieldValue) => void;
     placeholder: string;
 };
 
-const Select: React.FC<SelectProps> = ({ options, name, onChange, placeholder }) => {
-    const [value, setValue] = useState('');
+const Select: React.FC<SelectProps> = ({ options, name, onChange, placeholder, initValue }) => {
+    const [value, setValue] = useState(initValue || (typeof initValue === 'number' ? 0 : ''));
 
     const theme = useTheme();
 
@@ -75,13 +76,19 @@ const Select: React.FC<SelectProps> = ({ options, name, onChange, placeholder })
     };
 
     useEffect(() => {
+        console.log(typeof initValue, initValue);
+        setValue(initValue || (typeof initValue === 'number' ? 0 : ''));
+    }, [initValue]);
+
+    useEffect(() => {
+        console.log(value);
         if (onChange) onChange({ [name]: value });
         // eslint-disable-next-line
     }, [value]);
 
     return (
         <SelectWrapper>
-            <SelectStyled onChange={handleChange}>
+            <SelectStyled onChange={handleChange} value={value}>
                 <option></option>
                 {options.map(option => {
                     return <option key={`${name}-${option}`}>{option}</option>

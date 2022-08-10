@@ -1,4 +1,4 @@
-import { faGear, faPen, faXmark } from '@fortawesome/free-solid-svg-icons';
+import { faCaretDown, faCaretUp, faGear, faPen, faXmark } from '@fortawesome/free-solid-svg-icons';
 import React, { useEffect, useState } from 'react';
 import styled, { css } from 'styled-components';
 import { useAdminContext } from '../../contexts/AdminContext';
@@ -12,6 +12,7 @@ import { GuestEntry } from '../../api/guests';
 import { RemUnit } from '../../types/styling';
 import { getFirstAndLastNameByRecordId } from '../../helper/guests';
 import CreateForm from './CreateForm';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const TableContentsWrapper = styled.div`
     display: flex;
@@ -76,10 +77,23 @@ const Cell = styled.div<CellProps>`
     };
 `;
 
-const HeaderCell = styled(Cell)`
+interface HeaderCellProps {
+    $sortable: boolean;
+};
+
+const HeaderCell = styled(Cell)<HeaderCellProps>`
+    display: flex;
+    gap: .5rem;
     justify-content: center;
     user-select: none;
     text-align: center;
+    ${({ $sortable }) => {
+        if ($sortable) return css`
+            &:hover {
+                cursor: pointer;
+            };
+        `;
+    }}
 `;
 
 const TableActionsWrapper = styled.div`
@@ -126,11 +140,17 @@ const tableData: TableData = [
     { utilityName: 'delete', header: { content: 'Delete' }, width: '8rem', centered: true, breakpoint: 765 }
 ];
 
+type Search = {
+    field: keyof GuestEntry | '',
+    order: 'asc' | 'desc' | ''
+};
+
 const Table: React.FC = () => {
     const { records, getRecords, setModalOpen, setModalContents } = useAdminContext();
     const [selected, setSelected] = useState([] as string[]);
     const [pageWidth, setPageWidth] = useState(window.innerWidth);
     const [search, setSearch] = useState('');
+    const [columnSort, setColumnSort] = useState({ field: 'dateModified', order: 'desc' } as Search);
 
     useEffect(() => {
         getRecords();
@@ -160,6 +180,20 @@ const Table: React.FC = () => {
         if (records.length) {
             const allRecordIds = records.map(record => record.id);
             checked ? setSelected(allRecordIds) : setSelected([]);
+        };
+    };
+
+    const handleColumnClick = (fieldName: keyof GuestEntry) => {
+        if (columnSort.field === fieldName) {
+            setColumnSort((prev) => {
+                if (prev.order === '') return { field: fieldName, order: 'desc' };
+                else if (prev.order === 'desc') return { field: fieldName, order: 'asc' };
+                else if (prev.order === 'asc') return { field: '', order: '' };
+                else return prev;
+            });
+        }
+        else {
+            setColumnSort({ field: fieldName, order: 'desc' });
         };
     };
 
@@ -198,7 +232,7 @@ const Table: React.FC = () => {
     const openSingleEditModal = (recordId: string) => {
         setModalContents({
             title: 'Edit RSVP',
-            instructions: 'Please enter any information that you would like to update. Any fields left blank will not be updated.',
+            instructions: 'Please enter any information that you would like to update. Any fields left blank will clear out previously written data.',
             children: <EditForm recordIds={[recordId]} />
         });
         setModalOpen(true);
@@ -220,6 +254,19 @@ const Table: React.FC = () => {
             || lastName.toLowerCase().includes(search.toLowerCase());
         }
         else return true;
+    }).sort((a, b) => {
+        if (columnSort.field && columnSort.order) {
+            const current = a.fields[columnSort.field] || 0;
+            const next = b.fields[columnSort.field] || 0;
+            if (columnSort.order === 'asc') {
+                return current > next ? 1 : -1;
+            }
+            else if (columnSort.order === 'desc') {
+                return current < next ? 1 : -1;
+            }
+            else return 0;
+        };
+        return 0;
     }).map(record => {
         const { changedBy, dateModified } = record.fields;
         const changedByName = changedBy && getFirstAndLastNameByRecordId(records, changedBy);
@@ -258,9 +305,12 @@ const Table: React.FC = () => {
                 <Header>
                     {tableData.filter(column => column.breakpoint ? pageWidth > column.breakpoint : true).map(column => {
                         return (
-                            <HeaderCell key={`header-${column.fieldName || column.utilityName}`} $centered={column.centered} $width={column.width}>
+                            <HeaderCell $sortable={!!column.fieldName} onClick={() => column.fieldName && handleColumnClick(column.fieldName)} key={`header-${column.fieldName || column.utilityName}`} $centered={column.centered} $width={column.width}>
                                 {column.header && column.header.content}
                                 {column.utilityName === 'select' && <Checkbox secondary name='selectAll' initValue={false} onChange={selectAll} />}
+                                {columnSort.field === column.fieldName && !!columnSort.order && (
+                                    <FontAwesomeIcon icon={columnSort.order === 'asc' ? faCaretUp : faCaretDown} />
+                                )}
                             </HeaderCell>
                         );
                     })}

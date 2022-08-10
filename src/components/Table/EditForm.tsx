@@ -63,10 +63,18 @@ const EditForm: React.FC<EditFormProps> = ({ recordIds }) => {
     };
 
     const handleChange = (changeObject: FormFieldValue) => {
-        const stringValue: string[] = Object.values(changeObject);
-        if (!!stringValue[0]) {
+        const stringValue: string[] | number[] = Object.values(changeObject);
+        const update = stringValue[0];
+        if (update !== '' && recordIds.length > 1) {
+            setValue((prev) => ({ ...prev, ...changeObject }));
+        }
+        else {
             setValue((prev) => ({ ...prev, ...changeObject }));
         };
+    };
+
+    const getFieldValueByRecordId = (id: string, fieldName: keyof GuestEntry) => {
+        return records.find(record => record.id === id)?.fields[fieldName];
     };
 
     return (
@@ -89,6 +97,7 @@ const EditForm: React.FC<EditFormProps> = ({ recordIds }) => {
             )}
             {recordIds.length === 1 && <>
                 <Input
+                    initValue={recordIds.length > 1 ? '' : getFieldValueByRecordId(recordIds[0], 'firstName')}
                     name='firstName'
                     placeholder='First Name'
                     capitalize
@@ -96,6 +105,7 @@ const EditForm: React.FC<EditFormProps> = ({ recordIds }) => {
                     onChange={handleChange}
                 />
                 <Input
+                    initValue={recordIds.length > 1 ? '' : getFieldValueByRecordId(recordIds[0], 'lastName')}
                     name='lastName'
                     placeholder='Last Name'
                     capitalize
@@ -104,12 +114,21 @@ const EditForm: React.FC<EditFormProps> = ({ recordIds }) => {
                 />
             </>}
             <Input
+                initValue={recordIds.length > 1 ? '' : getFieldValueByRecordId(recordIds[0], 'allowedGuests')}
+                name='allowedGuests'
+                placeholder='Allowed Guests'
+                type='number'
+                onChange={handleChange}
+            />
+            <Input
+                initValue={recordIds.length > 1 ? '' : getFieldValueByRecordId(recordIds[0], 'partyId')}
                 name='partyId'
                 placeholder='Party ID'
                 type='text'
                 onChange={handleChange}
             />
             <Select
+                initValue={recordIds.length > 1 ? '' : getFieldValueByRecordId(recordIds[0], 'response')}
                 options={['Yes', 'No']}
                 onChange={handleChange}
                 name='response'
