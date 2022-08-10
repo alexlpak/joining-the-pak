@@ -42,7 +42,7 @@ export const AdminContextProvider: React.FC<AdminContextProviderProps> = ({ chil
 
     const getRecords = async () => {
         const response = await getDataFromTable();
-        if (response.records && response.records.length) setRecords(response.records);
+        if (response.records) setRecords(response.records);
     };
 
     const value = {

@@ -1,6 +1,6 @@
 import styled, { useTheme } from 'styled-components';
 import { theme } from '../styles/theme';
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef, useLayoutEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FormFieldValue } from '../types/forms';
@@ -20,7 +20,13 @@ const InputStyled = styled.input`
         outline: none;
         box-shadow: 0px 0px 0px 4px white;
     };
-    transition: box-shadow ${theme.animation.speed}ms ${theme.animation.curve};
+    &:disabled {
+        opacity: 50%;
+        &:hover {
+            cursor: not-allowed;
+        };
+    };
+    transition: all ${theme.animation.speed}ms ${theme.animation.curve};
 `;
 
 interface InputWrapperStyledProps {
@@ -62,12 +68,16 @@ interface InputProps {
     required?: boolean;
     capitalize?: boolean;
     width?: string;
+    disabled?: boolean;
+    focus?: boolean;
 };
 
-const Input: React.FC<InputProps> = ({ initValue, onChange, type, width, name, capitalize, placeholder, required, ...rest }) => {
+const Input: React.FC<InputProps> = ({ initValue, onChange, type, width, focus, name, capitalize, disabled, placeholder, required, ...rest }) => {
     const theme = useTheme();
 
     const [value, setValue] = useState(initValue || (typeof initValue === 'number' ? 0 : ''));
+
+    const inputRef = useRef<HTMLInputElement>(null);
     
     useEffect(() => {
         setValue(initValue || (typeof initValue === 'number' ? 0 : ''));
@@ -87,10 +97,24 @@ const Input: React.FC<InputProps> = ({ initValue, onChange, type, width, name, c
     const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
         const { value } = e.target;
         const update = capitalize ? capitalizeString(value) : value;
-        const regex = /^[A-Za-z0-9 ]{0,15}$/g;
+        const regex = type === 'number' ? /^[0-9]*$/g : /^[A-Za-z0-9 ]{0,15}$/g;
         const validInput = regex.test(value);
         if (validInput) setValue(() => update);
         // eslint-disable-next-line
+    }, []);
+
+    const handleFocus = () => {
+        if (inputRef.current) {
+            inputRef.current.focus();
+            inputRef.current.select();
+        };
+    };
+
+    useLayoutEffect(() => {
+        if (inputRef.current && focus) {
+            inputRef.current.focus();
+            inputRef.current.select();
+        };
     }, []);
 
     const handleClearButtonClick = () => {
@@ -102,10 +126,13 @@ const Input: React.FC<InputProps> = ({ initValue, onChange, type, width, name, c
             <InputStyled
                 value={value}
                 onChange={handleChange}
+                onFocus={handleFocus}
+                ref={inputRef}
                 name={name}
                 placeholder={placeholder}
                 required={required}
-                type={type}
+                type='text'
+                disabled={disabled}
                 {...rest}
             />
             {!!value && <ClearButtonStyled onClick={handleClearButtonClick} tabIndex={-1}>

@@ -147,6 +147,7 @@ type Search = {
 
 const Table: React.FC = () => {
     const { records, getRecords, setModalOpen, setModalContents } = useAdminContext();
+    const [tableRecords, setTableRecords] = useState(records);
     const [selected, setSelected] = useState([] as string[]);
     const [pageWidth, setPageWidth] = useState(window.innerWidth);
     const [search, setSearch] = useState('');
@@ -154,7 +155,6 @@ const Table: React.FC = () => {
 
     useEffect(() => {
         getRecords();
-        console.log(records);
         const handleResize = () => {
             setPageWidth(window.innerWidth);
         };
@@ -164,6 +164,27 @@ const Table: React.FC = () => {
         };
         // eslint-disable-next-line
     }, []);
+
+    useEffect(() => {
+        if (search !== '') {
+            const filteredRecords = records.filter(record => {
+                const { firstName, lastName } = record.fields;
+                if (search) {
+                    return firstName.toLowerCase().includes(search.toLowerCase())
+                    || lastName.toLowerCase().includes(search.toLowerCase());
+                }
+                else return true;
+            });
+            if (filteredRecords.length) setTableRecords(filteredRecords);
+            else setTableRecords([]);
+        }
+        else setTableRecords(records);
+    }, [search, records]);
+
+    useEffect(() => {
+        setTableRecords(records);
+        setSelected([]);
+    }, [records]);
 
     const handleCheck = (value: FormFieldValue) => {
         const id = Object.keys(value)[0];
@@ -177,8 +198,8 @@ const Table: React.FC = () => {
 
     const selectAll = (value: FormFieldValue) => {
         const checked: boolean = Object.values(value)[0];
-        if (records.length) {
-            const allRecordIds = records.map(record => record.id);
+        if (tableRecords.length) {
+            const allRecordIds = tableRecords.map(record => record.id);
             checked ? setSelected(allRecordIds) : setSelected([]);
         };
     };
@@ -200,6 +221,7 @@ const Table: React.FC = () => {
     const handleSearch = (value: FormFieldValue) => {
         const query = Object.values(value);
         setSearch(query[0]);
+        setSelected([]);
     };
 
     const openCreateNewModal = () => {
@@ -247,14 +269,7 @@ const Table: React.FC = () => {
         setModalOpen(true);
     };
 
-    const tableContent = records.length > 0 && records.filter(record => {
-        const { firstName, lastName } = record.fields;
-        if (search) {
-            return firstName.toLowerCase().includes(search.toLowerCase())
-            || lastName.toLowerCase().includes(search.toLowerCase());
-        }
-        else return true;
-    }).sort((a, b) => {
+    const tableContent = tableRecords.length > 0 && tableRecords.sort((a, b) => {
         if (columnSort.field && columnSort.order) {
             const current = a.fields[columnSort.field] || 0;
             const next = b.fields[columnSort.field] || 0;
@@ -307,7 +322,7 @@ const Table: React.FC = () => {
                         return (
                             <HeaderCell $sortable={!!column.fieldName} onClick={() => column.fieldName && handleColumnClick(column.fieldName)} key={`header-${column.fieldName || column.utilityName}`} $centered={column.centered} $width={column.width}>
                                 {column.header && column.header.content}
-                                {column.utilityName === 'select' && <Checkbox secondary name='selectAll' initValue={false} onChange={selectAll} />}
+                                {column.utilityName === 'select' && <Checkbox secondary name='selectAll' initValue={selected.length > 0 ? true : false} onChange={selectAll} />}
                                 {columnSort.field === column.fieldName && !!columnSort.order && (
                                     <FontAwesomeIcon icon={columnSort.order === 'asc' ? faCaretUp : faCaretDown} />
                                 )}
@@ -315,7 +330,7 @@ const Table: React.FC = () => {
                         );
                     })}
                 </Header>
-                {(tableContent && tableContent.length) ? tableContent : <EmptyRow>{records.length ? 'No records found.' : 'Loading records...'}</EmptyRow>}
+                {(tableContent && tableContent.length) ? tableContent : <EmptyRow>{tableRecords.length === 0 && 'No records found.'}</EmptyRow>}
             </TableWrapper>
         </TableContentsWrapper>
     );

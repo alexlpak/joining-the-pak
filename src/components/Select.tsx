@@ -76,12 +76,10 @@ const Select: React.FC<SelectProps> = ({ options, name, onChange, placeholder, i
     };
 
     useEffect(() => {
-        console.log(typeof initValue, initValue);
         setValue(initValue || (typeof initValue === 'number' ? 0 : ''));
     }, [initValue]);
 
     useEffect(() => {
-        console.log(value);
         if (onChange) onChange({ [name]: value });
         // eslint-disable-next-line
     }, [value]);

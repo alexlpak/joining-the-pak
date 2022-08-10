@@ -14,7 +14,7 @@ const CreateForm: React.FC = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
 
-    const { setModalOpen, getRecords } = useAdminContext();
+    const { setModalOpen, getRecords, records } = useAdminContext();
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -41,9 +41,17 @@ const CreateForm: React.FC = () => {
         setValue((prev) => ({ ...prev, ...value }));
     };
 
+    const guestExistsInRecords = (first: string, last: string) => {
+        return records.some(record => {
+            return record.fields.firstName.toLowerCase() === first.toLowerCase()
+            && record.fields.lastName.toLowerCase() === last.toLowerCase()
+        });
+    };
+
     return (
         <Form onSubmit={handleSubmit} error={error} secondary>
             <Input
+                focus
                 name='firstName'
                 placeholder='First Name'
                 capitalize
@@ -64,12 +72,14 @@ const CreateForm: React.FC = () => {
                 placeholder='Allowed Guests'
                 type='number'
                 onChange={handleChange}
+                disabled={!!value?.partyId}
             />
             <Input
                 name='partyId'
                 placeholder='Party ID'
                 type='text'
                 onChange={handleChange}
+                disabled={value?.allowedGuests && value?.allowedGuests > 0 || false}
             />
             <Select
                 options={['Yes', 'No']}
@@ -81,7 +91,7 @@ const CreateForm: React.FC = () => {
                 <Button secondary onClick={() => setModalOpen(false)} disabled={loading}>
                     <Typography bold>Cancel</Typography>
                 </Button>
-                <Button type='submit' icon={faPaperPlane} loading={loading} disabled={!(value.firstName && value.lastName) || loading}>
+                <Button type='submit' icon={faPaperPlane} loading={loading} disabled={!(value.firstName && value.lastName) || guestExistsInRecords(value.firstName, value.lastName) || loading}>
                     <Typography bold>Submit</Typography>
                 </Button>
             </ButtonWrapper>

@@ -46,7 +46,6 @@ const EditForm: React.FC<EditFormProps> = ({ recordIds }) => {
                 try {
                     setLoading(true);
                     const response = await updateGuests(updateRecords);
-                    console.log(response);
                     setLoading(false);
                     if (response.status === 200) {
                         setError('');
@@ -98,6 +97,7 @@ const EditForm: React.FC<EditFormProps> = ({ recordIds }) => {
             {recordIds.length === 1 && <>
                 <Input
                     initValue={recordIds.length > 1 ? '' : getFieldValueByRecordId(recordIds[0], 'firstName')}
+                    focus
                     name='firstName'
                     placeholder='First Name'
                     capitalize
@@ -114,16 +114,18 @@ const EditForm: React.FC<EditFormProps> = ({ recordIds }) => {
                 />
             </>}
             <Input
-                initValue={recordIds.length > 1 ? '' : getFieldValueByRecordId(recordIds[0], 'allowedGuests')}
+                initValue={recordIds.length > 1 ? '' : !!value?.partyId ? '' : getFieldValueByRecordId(recordIds[0], 'allowedGuests')}
                 name='allowedGuests'
                 placeholder='Allowed Guests'
+                disabled={!!value?.partyId}
                 type='number'
                 onChange={handleChange}
             />
             <Input
-                initValue={recordIds.length > 1 ? '' : getFieldValueByRecordId(recordIds[0], 'partyId')}
+                initValue={recordIds.length > 1 ? '' : value?.allowedGuests && value?.allowedGuests > 0 ? '' : getFieldValueByRecordId(recordIds[0], 'partyId')}
                 name='partyId'
                 placeholder='Party ID'
+                disabled={value?.allowedGuests && value?.allowedGuests > 0 || false}
                 type='text'
                 onChange={handleChange}
             />
@@ -138,7 +140,7 @@ const EditForm: React.FC<EditFormProps> = ({ recordIds }) => {
                 <Button secondary onClick={() => setModalOpen(false)} disabled={loading}>
                     <Typography bold>Cancel</Typography>
                 </Button>
-                <Button type='submit' icon={faPaperPlane} loading={loading} disabled={loading}>
+                <Button type='submit' icon={faPaperPlane} loading={loading} disabled={!(value.firstName && value.lastName) || loading}>
                     <Typography bold>Submit</Typography>
                 </Button>
             </ButtonWrapper>
