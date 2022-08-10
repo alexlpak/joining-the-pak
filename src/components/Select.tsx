@@ -75,8 +75,8 @@ const Select: React.FC<SelectProps> = ({ options, name, onChange, placeholder })
     };
 
     useEffect(() => {
-        console.log(value);
         if (onChange) onChange({ [name]: value });
+        // eslint-disable-next-line
     }, [value]);
 
     return (

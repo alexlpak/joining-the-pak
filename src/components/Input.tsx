@@ -85,6 +85,7 @@ const Input: React.FC<InputProps> = ({ initValue, onChange, width, name, capital
         const regex = /^[A-Za-z0-9 ]{0,15}$/g;
         const validInput = regex.test(value);
         if (validInput) setValue(() => update);
+        // eslint-disable-next-line
     }, []);
 
     const handleClearButtonClick = () => {

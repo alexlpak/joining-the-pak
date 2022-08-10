@@ -8,7 +8,7 @@ import { FormFieldValue } from '../../types/forms';
 import Typography from '../Typography';
 import { faPaperPlane } from '@fortawesome/free-solid-svg-icons';
 import styled from 'styled-components';
-import { updateGuests, GuestEntry, Record } from '../../api/guests';
+import { updateGuests, GuestEntry } from '../../api/guests';
 
 interface EditFormProps {
     recordIds: string[] | [];
