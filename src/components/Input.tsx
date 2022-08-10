@@ -81,9 +81,10 @@ const Input: React.FC<InputProps> = ({ initValue, onChange, width, name, capital
 
     const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
         const { value } = e.target;
-        const regex = /^[A-Za-z0-9]{0,15}$/g;
+        const update = capitalize ? capitalizeString(value) : value;
+        const regex = /^[A-Za-z0-9 ]{0,15}$/g;
         const validInput = regex.test(value);
-        if (validInput) setValue(() => value);
+        if (validInput) setValue(() => update);
     }, []);
 
     const handleClearButtonClick = () => {

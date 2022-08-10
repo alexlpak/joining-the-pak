@@ -88,6 +88,13 @@ const TableActionsWrapper = styled.div`
     align-items: center;
 `;
 
+const EmptyRow = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+`;
+
 interface TableColumn {
     header?: {
         content: React.ReactNode | React.ReactNode[];
@@ -122,6 +129,7 @@ const Table: React.FC = () => {
     const { records, getRecords, setModalOpen, setModalContents } = useAdminContext();
     const [selected, setSelected] = useState([] as string[]);
     const [pageWidth, setPageWidth] = useState(window.innerWidth);
+    const [search, setSearch] = useState('');
 
     useEffect(() => {
         getRecords();
@@ -151,6 +159,11 @@ const Table: React.FC = () => {
             const allRecordIds = records.map(record => record.id);
             checked ? setSelected(allRecordIds) : setSelected([]);
         };
+    };
+
+    const handleSearch = (value: FormFieldValue) => {
+        const query = Object.values(value);
+        setSearch(query[0]);
     };
 
     const openBatchEditModal = () => {
@@ -189,13 +202,46 @@ const Table: React.FC = () => {
         setModalOpen(true);
     };
 
+    const tableContent = records.length > 0 && records.filter(record => {
+        const { firstName, lastName } = record.fields;
+        if (search) {
+            return firstName.toLowerCase().includes(search.toLowerCase())
+            || lastName.toLowerCase().includes(search.toLowerCase());
+        }
+        else return true;
+    }).map(record => {
+        const { changedBy, dateModified } = record.fields;
+        const changedByName = changedBy && getFirstAndLastNameByRecordId(records, changedBy);
+        const dateString = dateModified && `${new Date(dateModified).toDateString()} ${new Date(dateModified).toLocaleTimeString()}`;
+        const componentMap: { [key in GuestEntry | any]: any } = {
+            'changedBy': changedByName,
+            'dateModified': dateString,
+        };
+        return (
+            <Row key={record.id} $selected={selected.includes(record.id)}>
+                {tableData.filter(column => column.breakpoint ? pageWidth > column.breakpoint : true).map(column => {
+                    const recordData = column.fieldName && record.fields[column.fieldName];
+                    const { fieldName } = column;
+                    return (
+                        <Cell $centered={column.centered} $width={column.width} key={`cell-${column.fieldName || column.utilityName}`}>
+                            {fieldName && fieldName in componentMap ? componentMap[fieldName] : recordData}
+                            {column.utilityName === 'select' && <Checkbox initValue={selected.includes(record.id)} name={record.id || ''} onChange={handleCheck} />}
+                            {column.utilityName === 'edit' && <Button onClick={() => openSingleEditModal(record.id)}>Edit</Button>}
+                            {column.utilityName === 'delete' && <Button onClick={() => openSingleDeleteModal(record.id)}>Delete</Button>}
+                        </Cell>
+                    );
+                })}
+            </Row>
+        );
+    });
+
     return (
         <TableContentsWrapper>
             <TableActionsWrapper>
                 <Button disabled={!selected.length} icon={faGear} onClick={() => openBatchEditModal()}>Batch Edit</Button>
                 <Button disabled={!selected.length} icon={faXmark} onClick={() => openBatchDeleteModal()}>Batch Delete</Button>
             </TableActionsWrapper>
-            <Input type='text' name='search' placeholder='Search' width={pageWidth < 550 ? '100%' : '20rem'} />
+            <Input onChange={handleSearch} type='text' name='search' placeholder='Search by Name' width={pageWidth < 550 ? '100%' : '20rem'} />
             <TableWrapper>
                 <Header>
                     {tableData.filter(column => column.breakpoint ? pageWidth > column.breakpoint : true).map(column => {
@@ -207,31 +253,7 @@ const Table: React.FC = () => {
                         );
                     })}
                 </Header>
-                {records.length > 0 && records.map(record => {
-                    const { changedBy, dateModified } = record.fields;
-                    const changedByName = changedBy && getFirstAndLastNameByRecordId(records, changedBy);
-                    const dateString = dateModified && `${new Date(dateModified).toDateString()} ${new Date(dateModified).toLocaleTimeString()}`;
-                    const componentMap: { [key in GuestEntry | any]: any } = {
-                        'changedBy': changedByName,
-                        'dateModified': dateString,
-                    };
-                    return (
-                        <Row key={record.id} $selected={selected.includes(record.id)}>
-                            {tableData.filter(column => column.breakpoint ? pageWidth > column.breakpoint : true).map(column => {
-                                const recordData = column.fieldName && record.fields[column.fieldName];
-                                const { fieldName } = column;
-                                return (
-                                    <Cell $centered={column.centered} $width={column.width} key={`cell-${column.fieldName || column.utilityName}`}>
-                                        {fieldName && fieldName in componentMap ? componentMap[fieldName] : recordData}
-                                        {column.utilityName === 'select' && <Checkbox initValue={selected.includes(record.id)} name={record.id || ''} onChange={handleCheck} />}
-                                        {column.utilityName === 'edit' && <Button onClick={() => openSingleEditModal(record.id)}>Edit</Button>}
-                                        {column.utilityName === 'delete' && <Button onClick={() => openSingleDeleteModal(record.id)}>Delete</Button>}
-                                    </Cell>
-                                );
-                            })}
-                        </Row>
-                    );
-                })}
+                {(tableContent && tableContent.length) ? tableContent : <EmptyRow>{records.length ? 'No records found.' : 'Loading records...'}</EmptyRow>}
             </TableWrapper>
         </TableContentsWrapper>
     );

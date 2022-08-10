@@ -30,7 +30,6 @@ const Passcode: React.FC = () => {
         e.preventDefault();
         setLoading(true);
         const validPasscode = await validatePasscode(value.passcode);
-        console.log(validPasscode);
         setLoading(false);
         if (validPasscode) {
             if (error) setError('');
