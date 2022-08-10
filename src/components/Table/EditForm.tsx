@@ -125,7 +125,7 @@ const EditForm: React.FC<EditFormProps> = ({ recordIds }) => {
                 initValue={recordIds.length > 1 ? '' : value?.allowedGuests && value?.allowedGuests > 0 ? '' : getFieldValueByRecordId(recordIds[0], 'partyId')}
                 name='partyId'
                 placeholder='Party ID'
-                disabled={value?.allowedGuests && value?.allowedGuests > 0 || false}
+                disabled={(value?.allowedGuests && value?.allowedGuests > 0) || false}
                 type='text'
                 onChange={handleChange}
             />

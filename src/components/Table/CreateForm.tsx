@@ -79,7 +79,7 @@ const CreateForm: React.FC = () => {
                 placeholder='Party ID'
                 type='text'
                 onChange={handleChange}
-                disabled={value?.allowedGuests && value?.allowedGuests > 0 || false}
+                disabled={(value?.allowedGuests && value?.allowedGuests > 0) || false}
             />
             <Select
                 options={['Yes', 'No']}

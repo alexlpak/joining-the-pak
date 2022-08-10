@@ -115,7 +115,7 @@ const Input: React.FC<InputProps> = ({ initValue, onChange, type, width, focus, 
             inputRef.current.focus();
             inputRef.current.select();
         };
-    }, []);
+    }, [focus]);
 
     const handleClearButtonClick = () => {
         setValue('');
