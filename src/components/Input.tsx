@@ -89,7 +89,7 @@ const Input: React.FC<InputProps> = ({ initValue, onChange, type, width, focus, 
         }
         else if (typeof value === 'string') {
             const update = capitalize ? capitalizeString(value) : value;
-            if (onChange) onChange({ [name]: update });
+            if (onChange) onChange({ [name]: update.trim() });
         };
         // eslint-disable-next-line
     }, [value]);
