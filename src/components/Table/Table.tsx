@@ -322,7 +322,7 @@ const Table: React.FC = () => {
                         return (
                             <HeaderCell $sortable={!!column.fieldName} onClick={() => column.fieldName && handleColumnClick(column.fieldName)} key={`header-${column.fieldName || column.utilityName}`} $centered={column.centered} $width={column.width}>
                                 {column.header && column.header.content}
-                                {column.utilityName === 'select' && <Checkbox secondary name='selectAll' initValue={selected.length > 0 ? true : false} onChange={selectAll} />}
+                                {column.utilityName === 'select' && <Checkbox secondary name='selectAll' initValue={tableRecords.length ? records.every(record => selected.includes(record.id)) : false} onChange={selectAll} />}
                                 {columnSort.field === column.fieldName && !!columnSort.order && (
                                     <FontAwesomeIcon icon={columnSort.order === 'asc' ? faCaretUp : faCaretDown} />
                                 )}

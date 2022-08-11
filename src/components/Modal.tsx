@@ -37,6 +37,8 @@ const ModalStyled = styled.div`
     gap: 1rem;
     text-align: left;
     margin: 1rem;
+    max-height: 80%;
+    overflow-y: scroll;
 `;
 
 interface ModalProps {

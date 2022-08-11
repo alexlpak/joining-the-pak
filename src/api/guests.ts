@@ -1,11 +1,11 @@
 import axios from 'axios';
+import { sliceIntoChunks } from '../helper/array';
+import { auditEvent } from './audit';
 
 const requestURL = `https://api.airtable.com/v0/appZEyPrBKugppqwn/tblDVFDWh4XLMIcC3`;
 const authHeader = { Authorization: `Bearer ${process.env.REACT_APP_AIRTABLE_API_KEY}` };
 
-const baseURL = `https://joining-the-pak.herokuapp.com`;
-// const baseURL = `http://localhost:5505`;
-
+const baseURL = 'https://joining-the-pak.herokuapp.com';
 
 export type RSVPResponse = 'Yes' | 'No' | '';
 
@@ -44,7 +44,8 @@ export type FetchResponse = {
 };
 
 export const getDataFromTable = async () => {
-    return await fetch(`${baseURL}/get-guests`).then(res => res.json()).then(data => data) as FetchResponse;
+    const response = await axios.get(`${baseURL}/get-guests`);
+    return await response.data as FetchResponse;
 };
 
 export const getRSVPByFirstAndLastName = async (first: string , last: string) => {
@@ -88,20 +89,40 @@ export const updateGuests = async (records: Record[]) => {
         headers: authHeader,
         data: { records: updateRecords }
     });
+    const ip = await axios.get('https://api.ipify.org');
+    await auditEvent({
+        data: JSON.stringify(updateRecords),
+        type: ['modified'],
+        recordId: records[0].fields.changedBy || '',
+        ipAddress: ip.data || ''
+    });
     return response;
 };
 
 export const deleteGuests = async (recordIds: string[]) => {
-    const queryString = recordIds.map(id => {
-        return encodeURI(`records[]=${id}`);
+    const recordIdsSlices = sliceIntoChunks(recordIds, 10);
+    const requests = recordIdsSlices.map(slice => {
+        const queryString = slice.map(id => {
+            return encodeURI(`records[]=${id}`);
+        });
+        const composedUrl = `${requestURL}?${queryString.join('&')}`;
+        const request = axios({
+            method: 'delete',
+            url: composedUrl,
+            headers: authHeader
+        });
+        return request;
     });
-    const composedUrl = `${requestURL}?${queryString.join('&')}`;
-    const response = await axios({
-        method: 'delete',
-        url: composedUrl,
-        headers: authHeader
+    const fetchedRecords = await getDataFromTable();
+    const deleteRecords = fetchedRecords.records.filter(record => recordIds.includes(record.id));
+    const ip = await axios.get('https://api.ipify.org');
+    await auditEvent({
+        data: JSON.stringify(deleteRecords),
+        type: ['deleted'],
+        recordId: 'System',
+        ipAddress: ip.data || ''
     });
-    return response;
+    return await Promise.all(requests);
 };
 
 export const createNewEntries = async (records: Record[]) => {
@@ -120,6 +141,13 @@ export const createNewEntries = async (records: Record[]) => {
         url: requestURL,
         headers: authHeader,
         data: { records: updateRecords }
+    });
+    const ip = await axios.get('https://api.ipify.org');
+    await auditEvent({
+        data: JSON.stringify(records),
+        type: ['created'],
+        recordId: records[0].fields.changedBy || '',
+        ipAddress: ip.data || ''
     });
     return response;
 };
