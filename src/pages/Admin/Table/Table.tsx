@@ -1,16 +1,16 @@
 import { faCaretDown, faCaretUp, faGear, faPen, faXmark } from '@fortawesome/free-solid-svg-icons';
 import React, { useEffect, useState } from 'react';
 import styled, { css } from 'styled-components';
-import { useAdminContext } from '../../contexts/AdminContext';
-import { FormFieldValue } from '../../types/forms';
-import Button from '../Button';
-import Checkbox from '../Checkbox';
-import Input from '../Input';
+import { useAdminContext } from '../../../contexts/AdminContext';
+import { FormFieldValue } from '../../../types/forms';
+import Button from '../../../components/Button';
+import Checkbox from '../../../components/Checkbox';
+import Input from '../../../components/Input';
 import EditForm from './EditForm';
 import DeleteForm from './DeleteForm';
-import { GuestEntry } from '../../api/guests';
-import { RemUnit } from '../../types/styling';
-import { getFirstAndLastNameByRecordId } from '../../helper/guests';
+import { GuestEntry } from '../../../api/guests';
+import { RemUnit } from '../../../types/styling';
+import { getFirstAndLastNameByRecordId } from '../../../helper/guests';
 import CreateForm from './CreateForm';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 

@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import Typography from '../Typography';
-import Button, { ButtonWrapper } from '../Button';
-import Form from '../Form';
-import { useAdminContext } from '../../contexts/AdminContext';
+import Typography from '../../../components/Typography';
+import Button, { ButtonWrapper } from '../../../components/Button';
+import Form from '../../../components/Form';
+import { useAdminContext } from '../../../contexts/AdminContext';
 import styled from 'styled-components';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
-import { deleteGuests } from '../../api/guests';
+import { deleteGuests } from '../../../api/guests';
 
 interface DeleteFormProps {
     recordIds: string[] | [];

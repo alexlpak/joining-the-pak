@@ -4,7 +4,7 @@ import { useTheme } from 'styled-components';
 import { Heading } from '../../../components/Typography';
 import styled from 'styled-components';
 import Overview from './metrics/Overview';
-import Table from '../../../components/Table/Table';
+import Table from '../Table/Table';
 
 const MetricCard = styled.div`
     display: flex;

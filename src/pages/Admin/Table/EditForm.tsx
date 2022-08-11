@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
-import Form from '../Form';
-import Input from '../Input';
-import Select from '../Select';
-import Button, { ButtonWrapper } from '../Button';
-import { useAdminContext } from '../../contexts/AdminContext';
-import { FormFieldValue } from '../../types/forms';
-import Typography from '../Typography';
+import Form from '../../../components/Form';
+import Input from '../../../components/Input';
+import Select from '../../../components/Select';
+import Button, { ButtonWrapper } from '../../../components/Button';
+import { useAdminContext } from '../../../contexts/AdminContext';
+import { FormFieldValue } from '../../../types/forms';
+import Typography from '../../../components/Typography';
 import { faPaperPlane } from '@fortawesome/free-solid-svg-icons';
 import styled from 'styled-components';
-import { updateGuests, GuestEntry } from '../../api/guests';
+import { updateGuests, GuestEntry } from '../../../api/guests';
 
 interface EditFormProps {
     recordIds: string[] | [];
@@ -73,7 +73,8 @@ const EditForm: React.FC<EditFormProps> = ({ recordIds }) => {
     };
 
     const getFieldValueByRecordId = (id: string, fieldName: keyof GuestEntry) => {
-        return records.find(record => record.id === id)?.fields[fieldName];
+        const value = records.find(record => record.id === id)?.fields[fieldName];
+        return typeof value === 'number' ? value.toString() : value;
     };
 
     return (

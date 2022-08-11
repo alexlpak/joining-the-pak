@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
-import Form from '../Form';
-import Input from '../Input';
-import Select from '../Select';
-import Button, { ButtonWrapper } from '../Button';
-import { useAdminContext } from '../../contexts/AdminContext';
-import { FormFieldValue } from '../../types/forms';
-import Typography from '../Typography';
+import Form from '../../../components/Form';
+import Input from '../../../components/Input';
+import Select from '../../../components/Select';
+import Button, { ButtonWrapper } from '../../../components/Button';
+import { useAdminContext } from '../../../contexts/AdminContext';
+import { FormFieldValue } from '../../../types/forms';
+import Typography from '../../../components/Typography';
 import { faPaperPlane } from '@fortawesome/free-solid-svg-icons';
-import { createNewEntries, GuestEntry } from '../../api/guests';
+import { createNewEntries, GuestEntry } from '../../../api/guests';
 
 const CreateForm: React.FC = () => {
     const [value, setValue] = useState({} as GuestEntry);

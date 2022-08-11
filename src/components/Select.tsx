@@ -58,7 +58,7 @@ const SelectPlaceholder = styled.span`
 `;
 
 interface SelectProps {
-    initValue?: string | number;
+    initValue?: string ;
     options: string[];
     name: string;
     onChange: (value: FormFieldValue) => void;
@@ -66,7 +66,7 @@ interface SelectProps {
 };
 
 const Select: React.FC<SelectProps> = ({ options, name, onChange, placeholder, initValue }) => {
-    const [value, setValue] = useState(initValue || (typeof initValue === 'number' ? 0 : ''));
+    const [value, setValue] = useState(initValue || '');
 
     const theme = useTheme();
 
@@ -76,7 +76,7 @@ const Select: React.FC<SelectProps> = ({ options, name, onChange, placeholder, i
     };
 
     useEffect(() => {
-        setValue(initValue || (typeof initValue === 'number' ? 0 : ''));
+        setValue(initValue || '');
     }, [initValue]);
 
     useEffect(() => {
