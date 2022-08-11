@@ -34,9 +34,9 @@ const RSVPSearch: React.FC = () => {
         setLoading(true);
         const rsvp = await getRSVPByFirstAndLastName(value.firstName, value.lastName);
         setLoading(false);
-        if (rsvp && rsvp.length) {
+        if (rsvp) {
             setError('');
-            setRecord(rsvp[0]);
+            setRecord(rsvp);
             setStep('Response');
         }
         else {

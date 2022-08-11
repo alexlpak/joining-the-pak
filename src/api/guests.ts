@@ -1,11 +1,7 @@
 import axios from 'axios';
-import { sliceIntoChunks } from '../helper/array';
-import { auditEvent } from './audit';
-
-const requestURL = `https://api.airtable.com/v0/appZEyPrBKugppqwn/tblDVFDWh4XLMIcC3`;
-const authHeader = { Authorization: `Bearer ${process.env.REACT_APP_AIRTABLE_API_KEY}` };
 
 const baseURL = 'https://joining-the-pak.herokuapp.com';
+// const baseURL = `http://localhost:5505`;
 
 export type RSVPResponse = 'Yes' | 'No' | '';
 
@@ -44,110 +40,45 @@ export type FetchResponse = {
 };
 
 export const getDataFromTable = async () => {
-    const response = await axios.get(`${baseURL}/get-guests`);
+    const response = await axios.get(`${baseURL}/getGuests`);
     return await response.data as FetchResponse;
 };
 
 export const getRSVPByFirstAndLastName = async (first: string , last: string) => {
-    const response: FetchResponse = await getDataFromTable();
-    if (response.records) {
-        const results = response.records.filter(record => {
-            const { firstName, lastName } = record.fields;
-            return (firstName.toLowerCase() === first.toLowerCase()) && (lastName.toLowerCase() === last.toLowerCase());
-        });
-        return results;
-    };
-    return [];
+    const rsvp = await axios.get(`${baseURL}/getRsvpByName?firstName=${first}&lastName=${last}`);
+    if (rsvp.data) return rsvp.data;
+    else return [];
 };
 
 export const getRSVPByPartyId = async (id: string) => {
-    const response: FetchResponse = await getDataFromTable();
-    if (response.records) {
-        const results = response.records.filter(record => {
-            const { partyId } = record.fields;
-            return partyId === id;
-        });
-        return results;
-    };
-    return [];
+    const rsvp = await axios.get(`${baseURL}/getRsvpByPartyId?id=${id}`);
+    if (rsvp.data) return rsvp.data;
+    else return [];
 };
 
 export const updateGuests = async (records: Record[]) => {
-    const updateRecords = records.map(record => {
-        const output: Record = {
-            ...record,
-            fields: {
-                ...record.fields,
-                dateModified: new Date().toISOString()
-            }
-        }
-        return output;
-    });
-    const response: RequestResponse = await axios({
-        method: 'patch',
-        url: requestURL,
-        headers: authHeader,
-        data: { records: updateRecords }
-    });
-    const ip = await axios.get('https://api.ipify.org');
-    await auditEvent({
-        data: JSON.stringify(updateRecords),
-        type: ['modified'],
-        recordId: records[0].fields.changedBy || '',
-        ipAddress: ip.data || ''
+    const response = await axios({
+        method: 'post',
+        url: `${baseURL}/updateGuests`,
+        data: { records: records }
     });
     return response;
 };
 
 export const deleteGuests = async (recordIds: string[]) => {
-    const recordIdsSlices = sliceIntoChunks(recordIds, 10);
-    const requests = recordIdsSlices.map(slice => {
-        const queryString = slice.map(id => {
-            return encodeURI(`records[]=${id}`);
-        });
-        const composedUrl = `${requestURL}?${queryString.join('&')}`;
-        const request = axios({
-            method: 'delete',
-            url: composedUrl,
-            headers: authHeader
-        });
-        return request;
+    const response = await axios({
+        method: 'post',
+        url: `${baseURL}/deleteGuests`,
+        data: recordIds
     });
-    const fetchedRecords = await getDataFromTable();
-    const deleteRecords = fetchedRecords.records.filter(record => recordIds.includes(record.id));
-    const ip = await axios.get('https://api.ipify.org');
-    await auditEvent({
-        data: JSON.stringify(deleteRecords),
-        type: ['deleted'],
-        recordId: 'System',
-        ipAddress: ip.data || ''
-    });
-    return await Promise.all(requests);
+    return response;
 };
 
 export const createNewEntries = async (records: Record[]) => {
-    const updateRecords = records.map(record => {
-        const output: Record = {
-            ...record,
-            fields: {
-                ...record.fields,
-                dateModified: new Date().toISOString()
-            }
-        }
-        return output;
-    });
-    const response: RequestResponse = await axios({
+    const response = await axios({
         method: 'post',
-        url: requestURL,
-        headers: authHeader,
-        data: { records: updateRecords }
-    });
-    const ip = await axios.get('https://api.ipify.org');
-    await auditEvent({
-        data: JSON.stringify(records),
-        type: ['created'],
-        recordId: records[0].fields.changedBy || '',
-        ipAddress: ip.data || ''
+        url: `${baseURL}/createNewGuests`,
+        data: records
     });
     return response;
 };
