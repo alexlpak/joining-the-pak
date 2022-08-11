@@ -1,7 +1,6 @@
 import axios from 'axios';
 
-// const baseURL = 'https://joining-the-pak.herokuapp.com';
-const baseURL = `http://localhost:5505`;
+const baseURL = 'https://joining-the-pak.herokuapp.com';
 
 export type RSVPResponse = 'Yes' | 'No' | '';
 
