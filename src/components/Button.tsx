@@ -50,7 +50,7 @@ const ButtonStyled = styled.button<ButtonStyledProps>`
     transition: all ${theme.animation.speed}ms ${theme.animation.curve};
 `;
 
-const LoaderIcon = styled(FontAwesomeIcon).attrs({
+export const LoaderIcon = styled(FontAwesomeIcon).attrs({
     icon: faSpinner
 })`
     animation-name: spin;

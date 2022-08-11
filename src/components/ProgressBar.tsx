@@ -35,15 +35,16 @@ const Filled = styled.div<PercentProps>`
 
 interface ProgressBarProps {
     percent: number;
+    append?: string;
 };
 
-const ProgressBar: React.FC<ProgressBarProps> = ({ percent }) => {
+const ProgressBar: React.FC<ProgressBarProps> = ({ percent, append }) => {
     return (
         <ProgressBarWrapper>
             <ProgressBarStyled>
                 <Filled $percent={percent} />
             </ProgressBarStyled>
-            <Typography italic>{percent}% Responded</Typography>
+            <Typography italic>{percent}%{append && ` ${append}`}</Typography>
         </ProgressBarWrapper>
     );
 };

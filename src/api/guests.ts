@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-const baseURL = 'https://joining-the-pak.herokuapp.com';
-// const baseURL = `http://localhost:5505`;
+// const baseURL = 'https://joining-the-pak.herokuapp.com';
+const baseURL = `http://localhost:5505`;
 
 export type RSVPResponse = 'Yes' | 'No' | '';
 
@@ -47,13 +47,13 @@ export const getDataFromTable = async () => {
 export const getRSVPByFirstAndLastName = async (first: string , last: string) => {
     const rsvp = await axios.get(`${baseURL}/getRsvpByName?firstName=${first}&lastName=${last}`);
     if (rsvp.data) return rsvp.data;
-    else return [];
+    else return false;
 };
 
 export const getRSVPByPartyId = async (id: string) => {
     const rsvp = await axios.get(`${baseURL}/getRsvpByPartyId?id=${id}`);
     if (rsvp.data) return rsvp.data;
-    else return [];
+    else return false;
 };
 
 export const updateGuests = async (records: Record[]) => {

@@ -18,7 +18,7 @@ const RSVPResponse: React.FC = () => {
         response: ''
     };
 
-    const { allowedGuests } = record.fields;
+    const { allowedGuests } = record?.fields || {};
 
     const [value, setValue] = useState(initValue);
     const [loading, setLoading] = useState(false);
