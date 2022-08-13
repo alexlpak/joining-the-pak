@@ -27,7 +27,7 @@ const SectionContentsWrapper = styled.div`
     }
 `;
 
-const dateDifference = getDifferenceSinceDate('2013-11-18');
+const dateDifference = getDifferenceSinceDate('2013-11-18', new Date().toLocaleString());
 
 const data = {
     verbiage: `Our story began ${dateDifference.years.toLocaleString()} years ago in 2013. As soon as we saw each other on move-in day our freshman year in college, we knew pretty quickly that we'd be together at some point. A few months later of spending time together, we began exclusively dating on November 18, 2013.\n\nSince then, we've done pretty much everything together from moving to Florida to work at Disney World, graduating college, and moving in together. It's been ${dateDifference.days.toLocaleString()} days of loving each together and a lifetime to go.`
