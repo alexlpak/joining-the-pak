@@ -3,7 +3,6 @@ import Typography from '../components/Typography';
 import { useTheme } from 'styled-components';
 import styled from 'styled-components';
 import Line from '../components/Line';
-import FloralPatternPNG from '../assets/images/floral-pattern.png';
 import Button from '../components/Button';
 import RegistryImage1 from '../assets/images/registry.jpg';
 import RegistryImage2 from '../assets/images/registry-02.jpg';
@@ -42,7 +41,7 @@ const RegistrySection = () => {
         query: '(max-width: 780px)',
     });
     return (
-        <Section id='registry' backgroundImage={FloralPatternPNG}>
+        <Section id='registry'>
             <SectionContentsWrapper>                
                 <Carousel roundedEdges autoplay width='20rem' height='20rem' slides={[
                     <CarouselImage $fullWidth src={RegistryImage1} />,

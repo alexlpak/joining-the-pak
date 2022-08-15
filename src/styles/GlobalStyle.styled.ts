@@ -1,4 +1,5 @@
 import { createGlobalStyle } from 'styled-components';
+import FloralPatternPNG from '../assets/images/floral-pattern-10-percent.png';
 
 const GlobalStyle = createGlobalStyle`
     html {
@@ -11,6 +12,11 @@ const GlobalStyle = createGlobalStyle`
 
     body {
         font-family: minion-pro, serif;
+        width: 100%;
+        background-image: url(${FloralPatternPNG});
+        background-attachment: fixed;
+        background-size: 50rem;
+        z-index: -1;
     }
 
     #root {

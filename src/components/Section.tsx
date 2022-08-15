@@ -15,7 +15,7 @@ const SectionStyled = styled.section<SectionStyledProps>`
     flex-direction: column;
     align-items: center;
     width: 100%;
-    background-color: ${({ $color }) => $color || 'unset'};
+    background-color: ${({ $color }) => $color};
     color: ${({ $color }) => $color === theme.colors.main ? 'white' : 'inherit'};
     ${({ $backgroundImage }) => {
         if ($backgroundImage) {

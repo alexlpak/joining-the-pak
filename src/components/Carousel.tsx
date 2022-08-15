@@ -6,12 +6,14 @@ import styled, { css } from 'styled-components';
 interface CarouselWrapperProps {
     $width: string;
     $height: string;
+    $backgroundColor?: string;
 };
 
 const CarouselWrapper = styled.div<CarouselWrapperProps>`
     width: 100%;
     max-width: ${({ $width }) => $width};
     height: ${({ $height }) => $height};
+    background-color: ${({ $backgroundColor }) => $backgroundColor};
     position: relative;
     overflow: hidden;
     user-select: none;
@@ -91,9 +93,10 @@ interface CarouselProps {
     autoplay?: boolean;
     interval?: number;
     roundedEdges?: boolean;
+    backgroundColor?: string;
 };
 
-const Carousel: React.FC<CarouselProps> = ({ slides, interval, roundedEdges, width, autoplay, height, arrows }) => {
+const Carousel: React.FC<CarouselProps> = ({ slides, interval, backgroundColor, roundedEdges, width, autoplay, height, arrows }) => {
     const [currentSlide, setCurrentSlide] = useState(0);
 
     const incrementSlide = () => {
@@ -128,7 +131,7 @@ const Carousel: React.FC<CarouselProps> = ({ slides, interval, roundedEdges, wid
     }, [autoplay, interval, currentSlide]);
 
     return (
-        <CarouselWrapper $height={height || '30rem'} $width={width || '800px'}>
+        <CarouselWrapper $backgroundColor={backgroundColor} $height={height || '30rem'} $width={width || '800px'}>
             {arrows && <CarouselButtonWrapper $direction='left' onClick={() => decrementSlide()}>
                 <FontAwesomeIcon icon={faCaretLeft} />
             </CarouselButtonWrapper>}

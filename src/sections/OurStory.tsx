@@ -3,7 +3,6 @@ import Typography from '../components/Typography';
 import { useTheme } from 'styled-components';
 import styled from 'styled-components';
 import Line from '../components/Line';
-import FloralPatternPNG from '../assets/images/floral-pattern.png';
 import OurStoryImage1 from '../assets/images/our-story.jpg';
 import OurStoryImage2 from '../assets/images/our-story-02.jpg';
 import OurStoryImage3 from '../assets/images/our-story-03.jpg';
@@ -42,7 +41,7 @@ const OurStorySection = () => {
         query: '(max-width: 780px)',
     });
     return (
-        <Section id='our-story' backgroundImage={FloralPatternPNG}>
+        <Section id='our-story'>
             <SectionContentsWrapper>
                 <Carousel roundedEdges autoplay width='20rem' height='20rem' slides={[
                     <CarouselImage $fullWidth src={OurStoryImage1} />,

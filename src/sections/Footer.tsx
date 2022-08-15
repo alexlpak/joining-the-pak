@@ -1,6 +1,5 @@
 import React from 'react';
 import Section from '../components/Section';
-import FloralPatternPNG from '../assets/images/floral-pattern.png';
 import Typography from '../components/Typography';
 import { useTheme } from 'styled-components';
 import styled from 'styled-components';
@@ -32,7 +31,6 @@ const Footer: React.FC = () => {
     return (
         <Section
             centered
-            backgroundImage={FloralPatternPNG}
             padding='4rem 2rem'
         >
             <FooterWrapper>
