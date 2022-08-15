@@ -3,11 +3,14 @@ import Typography from '../components/Typography';
 import { useTheme } from 'styled-components';
 import styled from 'styled-components';
 import Line from '../components/Line';
-import { ImagePlaceholder } from '../components/Image';
 import FloralPatternPNG from '../assets/images/floral-pattern.png';
-import OurStoryImage from '../assets/images/our-story.jpg';
+import OurStoryImage1 from '../assets/images/our-story.jpg';
+import OurStoryImage2 from '../assets/images/our-story-02.jpg';
+import OurStoryImage3 from '../assets/images/our-story-03.jpg';
 import { useMediaQuery } from 'react-responsive';
 import { getDifferenceSinceDate } from '../helper/dates';
+import Carousel from '../components/Carousel';
+import { CarouselImage } from '../components/Carousel';
 
 const OurStoryContentsStyled = styled.div`
     display: flex;
@@ -40,8 +43,12 @@ const OurStorySection = () => {
     });
     return (
         <Section id='our-story' backgroundImage={FloralPatternPNG}>
-            <SectionContentsWrapper>                
-                <ImagePlaceholder $backgroundImage={OurStoryImage} />
+            <SectionContentsWrapper>
+                <Carousel roundedEdges autoplay width='20rem' height='20rem' slides={[
+                    <CarouselImage $fullWidth src={OurStoryImage1} />,
+                    <CarouselImage $fullWidth src={OurStoryImage2} />,
+                    <CarouselImage $fullWidth src={OurStoryImage3} />,
+                ]} />
                 <Line orientation={isMobileDevice ? 'horizontal' : 'vertical'} length='20rem' color={theme.colors.main} />
                 <OurStoryContentsStyled>
                     <Typography type='header' color={theme.colors.main}>Our Story</Typography>

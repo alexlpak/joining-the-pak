@@ -4,13 +4,15 @@ import { useTheme } from 'styled-components';
 import styled from 'styled-components';
 import Line from '../components/Line';
 import FloralPatternPNG from '../assets/images/floral-pattern.png';
-import { ImagePlaceholder } from '../components/Image';
 import Button from '../components/Button';
-import RegistryImage from '../assets/images/registry.jpg';
+import RegistryImage1 from '../assets/images/registry.jpg';
+import RegistryImage2 from '../assets/images/registry-02.jpg';
+import RegistryImage3 from '../assets/images/registry-03.jpg';
 import { useMediaQuery } from 'react-responsive';
 import { faExternalLink } from '@fortawesome/free-solid-svg-icons';
 import Link from '../components/Link.styled';
 import { ButtonWrapper } from '../components/Button';
+import Carousel, { CarouselImage } from '../components/Carousel';
 
 const RegistryContentsStyled = styled.div`
     display: flex;
@@ -42,7 +44,11 @@ const RegistrySection = () => {
     return (
         <Section id='registry' backgroundImage={FloralPatternPNG}>
             <SectionContentsWrapper>                
-                <ImagePlaceholder $backgroundImage={RegistryImage} />
+                <Carousel roundedEdges autoplay width='20rem' height='20rem' slides={[
+                    <CarouselImage $fullWidth src={RegistryImage1} />,
+                    <CarouselImage $fullWidth src={RegistryImage2} />,
+                    <CarouselImage $fullWidth src={RegistryImage3} />,
+                ]} />
                 <Line orientation={isMobileDevice ? 'horizontal' : 'vertical'} length='20rem' color={theme.colors.main} />
                 <RegistryContentsStyled>
                     <Typography type='header' color={theme.colors.main}>Registry</Typography>

@@ -1,44 +1,19 @@
-import styled from 'styled-components';
-import CarouselImage01 from '../assets/images/carousel-01.jpg';
-import CarouselImage03 from '../assets/images/carousel-03.jpg';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Autoplay } from 'swiper';
-import 'swiper/css';
-import 'swiper/css/bundle';
-
-interface CarouselImageProps {
-    $src: string;
-};
-
-const CarouselImage = styled.div<CarouselImageProps>`
-    background-image: url(${({ $src }) => $src});
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position-x: center;
-    background-position-y: 100%;
-    height: 50rem;
-    width: 100%;
-`;
+import Carousel, { CarouselImage } from '../components/Carousel';
+import CarouselImg1 from '../assets/images/carousel-01.jpg';
+import CarouselImg2 from '../assets/images/carousel-02.jpg';
+import CarouselImg3 from '../assets/images/carousel-03.jpg';
+import { useMediaQuery } from 'react-responsive';
 
 const CarouselSection = () => {
+    const isMobileDevice = useMediaQuery({
+        query: '(max-width: 1000px)',
+    });
     return (
-        <Swiper
-            autoplay={{
-                delay: 5000
-            }}
-            loop={true}
-            style={{
-                width: '100%'
-            }}
-            modules={[Autoplay]}
-        >
-            <SwiperSlide>
-                <CarouselImage $src={CarouselImage01} />
-            </SwiperSlide>
-            <SwiperSlide>
-                <CarouselImage $src={CarouselImage03} />
-            </SwiperSlide>
-        </Swiper>
+        <Carousel autoplay height='40rem' width='100%' slides={[
+            <CarouselImage $fullWidth={isMobileDevice} src={CarouselImg2} />,
+            <CarouselImage $fullWidth={isMobileDevice} src={CarouselImg1} />,
+            <CarouselImage $fullWidth={isMobileDevice} src={CarouselImg3} />,
+        ]} />
     );
 };
 
