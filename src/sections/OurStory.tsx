@@ -16,17 +16,19 @@ const OurStoryContentsStyled = styled.div`
     flex-direction: column;
     gap: .5rem;
     width: 100%;
-    max-width: 20rem;
+    max-width: ${({ theme }) => theme.sizing.section.main};
     line-height: 1.5;
 `;
 
 const SectionContentsWrapper = styled.div`
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 1.5rem;
+    width: 100%;
     @media (max-width: 780px) {
         flex-direction: column;
-    }
+    };
 `;
 
 const dateDifference = getDifferenceSinceDate('2013-11-18', new Date().toLocaleString());
@@ -43,12 +45,12 @@ const OurStorySection = () => {
     return (
         <Section id='our-story'>
             <SectionContentsWrapper>
-                <Carousel roundedEdges autoplay width='20rem' height='20rem' slides={[
+                <Carousel roundedEdges autoplay width={theme.sizing.section.main} height={theme.sizing.section.main} slides={[
                     <CarouselImage $fullWidth src={OurStoryImage1} />,
                     <CarouselImage $fullWidth src={OurStoryImage2} />,
                     <CarouselImage $fullWidth src={OurStoryImage3} />,
                 ]} />
-                <Line orientation={isMobileDevice ? 'horizontal' : 'vertical'} length='20rem' color={theme.colors.main} />
+                <Line orientation={isMobileDevice ? 'horizontal' : 'vertical'} length={theme.sizing.section.main} color={theme.colors.main} />
                 <OurStoryContentsStyled>
                     <Typography type='header' color={theme.colors.main}>Our Story</Typography>
                     <Typography>{data.verbiage}</Typography>

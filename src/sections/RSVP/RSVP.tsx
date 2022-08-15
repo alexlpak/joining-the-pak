@@ -17,6 +17,7 @@ const SectionContentsWrapper = styled.div`
     text-align: center;
     justify-content: center;
     align-items: center;
+    width: 100%;
     @media (max-width: 780px) {
         flex-direction: column;
     };
@@ -26,6 +27,8 @@ const RSVPContentsWrapper = styled.div`
     display: flex;
     flex-direction: column;
     gap: 1rem;
+    max-width: ${({ theme }) => theme.sizing.section.main};
+    width: 100%;
 `;
 
 const RSVPSection = () => {
@@ -45,10 +48,10 @@ const RSVPSection = () => {
                     </RSVPContentsWrapper>
                     <Line
                         orientation={isMobileDevice ? 'horizontal' : 'vertical'}
-                        length='20rem'
+                        length={theme.sizing.section.main}
                         color='white'
                     />
-                    <Carousel roundedEdges autoplay width='20rem' height='20rem' slides={[
+                    <Carousel roundedEdges autoplay width={theme.sizing.section.main} height={theme.sizing.section.main} slides={[
                         <CarouselImage $fullWidth src={RSVPImage} />,
                         <CarouselImage $fullWidth src={OurStoryImage3} />,
                         <CarouselImage $fullWidth src={OurStoryImage2} />,

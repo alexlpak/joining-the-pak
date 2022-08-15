@@ -6,6 +6,9 @@ export const theme: DefaultTheme = {
             small: '.25rem',
             medium: '.5rem',
             large: '.75rem'
+        },
+        section: {
+            main: '22rem'
         }
     },
     colors: {

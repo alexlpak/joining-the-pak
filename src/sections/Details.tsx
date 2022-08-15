@@ -14,7 +14,7 @@ const DetailsContentsStyled = styled.div`
     align-items: center;
     gap: 1rem;
     width: 100%;
-    max-width: 20rem;
+    max-width: ${({ theme }) => theme.sizing.section.main};
 `;
 
 const SectionContentsWrapper = styled.div`
@@ -22,6 +22,8 @@ const SectionContentsWrapper = styled.div`
     align-items: center;
     text-align: center;
     gap: 1.5rem;
+    width: 100%;
+    justify-content: center;
     @media (max-width: 780px) {
         flex-direction: column;
     };
@@ -41,8 +43,8 @@ const GoogleMapStyled = styled.iframe.attrs({
     marginwidth: '0'
 })`
     width: 100%;
-    max-width: 20rem;
-    height: 20rem;
+    max-width: ${({ theme }) => theme.sizing.section.main};
+    height: ${({ theme }) => theme.sizing.section.main};
     background-color: lightgray;
     border-radius: .5rem;
     overflow: hidden;
@@ -68,7 +70,7 @@ const DetailsSection = () => {
                     </EventDetailsWrapper>
                     <Button as={Link} secondary href='https://goo.gl/maps/1KNMhHy3owQwzxTc7' target='_blank' icon={faExternalLink}>Get Directions</Button>
                 </DetailsContentsStyled>
-                <Line orientation={isMobileDevice ? 'horizontal' : 'vertical'} length='20rem' color='white' />
+                <Line orientation={isMobileDevice ? 'horizontal' : 'vertical'} length={theme.sizing.section.main} color='white' />
                 <GoogleMapStyled />
             </SectionContentsWrapper>
         </Section>

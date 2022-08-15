@@ -18,7 +18,7 @@ const RegistryContentsStyled = styled.div`
     flex-direction: column;
     gap: 1rem;
     width: 100%;
-    max-width: 20rem;
+    max-width: ${({ theme }) => theme.sizing.section.main};
     line-height: 1.5;
 `;
 
@@ -26,6 +26,8 @@ const SectionContentsWrapper = styled.div`
     display: flex;
     align-items: center;
     gap: 1.5rem;
+    width: 100%;
+    justify-content: center;
     @media (max-width: 780px) {
         flex-direction: column;
     }
@@ -43,12 +45,12 @@ const RegistrySection = () => {
     return (
         <Section id='registry'>
             <SectionContentsWrapper>                
-                <Carousel roundedEdges autoplay width='20rem' height='20rem' slides={[
+                <Carousel roundedEdges autoplay width={theme.sizing.section.main} height={theme.sizing.section.main} slides={[
                     <CarouselImage $fullWidth src={RegistryImage1} />,
                     <CarouselImage $fullWidth src={RegistryImage2} />,
                     <CarouselImage $fullWidth src={RegistryImage3} />,
                 ]} />
-                <Line orientation={isMobileDevice ? 'horizontal' : 'vertical'} length='20rem' color={theme.colors.main} />
+                <Line orientation={isMobileDevice ? 'horizontal' : 'vertical'} length={theme.sizing.section.main} color={theme.colors.main} />
                 <RegistryContentsStyled>
                     <Typography type='header' color={theme.colors.main}>Registry</Typography>
                     <Typography>{data.verbiage}</Typography>

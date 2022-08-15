@@ -44,11 +44,13 @@ interface SectionContentsProps {
 };
 
 const SectionContents = styled.div<SectionContentsProps>`
-    max-width: ${({ $maxWidth }) => $maxWidth || '50rem'};
+    max-width: ${({ $maxWidth }) => $maxWidth || '60rem'};
     width: 100%;
     padding: ${({ $padding }) => $padding || '2rem'};
     display: flex;
     flex-direction: column;
+    align-items: center;
+    justify-content: center;
     gap: ${({ $gap }) => $gap || '2rem'};
     ${({ $centered }) => {
         if ($centered) return css`

@@ -7,6 +7,9 @@ declare module 'styled-components' {
             small: string;
             medium: string;
             large: string;
+        },
+        section: {
+          main: string;
         }
     },
     colors: {
