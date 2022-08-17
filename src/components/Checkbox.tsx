@@ -4,6 +4,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
 import { FormFieldValue } from '../types/forms';
 
+const CheckboxWrapper = styled.div`
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    align-items: center;
+`;
+
 interface CheckboxStyledProps {
     $secondary?: boolean;
 };
@@ -29,15 +36,23 @@ const Check = styled(FontAwesomeIcon)`
     position: absolute;
 `;
 
+const Label = styled.span`
+    user-select: none;
+    &:hover {
+        cursor: pointer;
+    };
+`;
+
 interface CheckboxProps {
     initValue: boolean;
+    label?: string;
     name?: string;
     onChange?: (value: FormFieldValue) => void;
     onClick?: () => void;
     secondary?: boolean;
 };
 
-const Checkbox: React.FC<CheckboxProps> = ({ name, initValue, onChange, onClick, secondary }) => {
+const Checkbox: React.FC<CheckboxProps> = ({ name, initValue, label, onChange, onClick, secondary }) => {
     const [checked, setChecked] = useState(initValue || false);
 
     const theme = useTheme();
@@ -57,9 +72,12 @@ const Checkbox: React.FC<CheckboxProps> = ({ name, initValue, onChange, onClick,
     };
 
     return (
-        <CheckboxStyled $secondary={secondary} onClick={handleClick}>
-            {checked && <Check icon={faCheck} color={secondary ? theme.colors.main : 'white'} />}
-        </CheckboxStyled>
+        <CheckboxWrapper>
+            <CheckboxStyled $secondary={secondary} onClick={handleClick}>
+                {checked && <Check icon={faCheck} color={secondary ? theme.colors.main : 'white'} />}
+            </CheckboxStyled>
+            {label && <Label onClick={handleClick}>{label}</Label>}
+        </CheckboxWrapper>
     );
 };
 

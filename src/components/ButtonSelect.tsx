@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Button from './Button';
 import { faCheck, faArrowPointer } from '@fortawesome/free-solid-svg-icons';
 import styled from 'styled-components';
@@ -27,12 +27,18 @@ interface ButtonSelectProps {
     options: string[];
     multi?: boolean;
     initValue?: string;
+    deselectAll?: boolean;
+    disabled?: boolean;
 };
 
 type ButtonSelectState = string[] | string;
 
-const ButtonSelect: React.FC<ButtonSelectProps> = ({ onChange, name, options, multi, initValue }) => {
+const ButtonSelect: React.FC<ButtonSelectProps> = ({ onChange, name, options, multi, initValue, deselectAll, disabled }) => {
     const [value, setValue] = useState<ButtonSelectState>(initValue || (multi ? [] : ''));
+
+    useEffect(() => {
+        if (deselectAll && multi) setValue([]);
+    }, [deselectAll, multi]);
 
     const handleClick = (option: string) => {
         if (Array.isArray(value)) {
@@ -74,6 +80,7 @@ const ButtonSelect: React.FC<ButtonSelectProps> = ({ onChange, name, options, mu
             {options && options.map(option => {
                 return (
                     <SelectButton
+                        disabled={disabled}
                         onClick={() => handleClick(option)}
                         key={option}
                         secondary
