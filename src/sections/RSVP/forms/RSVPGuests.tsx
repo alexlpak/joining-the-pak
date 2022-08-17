@@ -142,6 +142,7 @@ const RSVPGuests: React.FC = () => {
                     type='submit'
                     secondary
                     icon={faPaperPlane}
+                    disabled={!!value.firstName || !!value.lastName}
                 >
                     <Typography bold>Submit</Typography>
                 </Button>
