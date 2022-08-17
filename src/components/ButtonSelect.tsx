@@ -76,7 +76,7 @@ const ButtonSelect: React.FC<ButtonSelectProps> = ({ onChange, name, options, mu
 
     return (
         <ButtonSelectWrapper>
-            {multi && options.length > 1 && <Button onClick={handleSelectAllClick} icon={faArrowPointer}>{allOptionsSelected ? 'Deselect All' : 'Select All'}</Button>}
+            {multi && options.length > 1 && <Button disabled={disabled} onClick={handleSelectAllClick} icon={faArrowPointer}>{allOptionsSelected ? 'Deselect All' : 'Select All'}</Button>}
             {options && options.map(option => {
                 return (
                     <SelectButton
