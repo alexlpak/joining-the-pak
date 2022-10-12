@@ -7,6 +7,7 @@ import ProgressBar from '../../../../components/ProgressBar';
 const OverviewWrapper = styled.div`
     display: flex;
     flex-direction: column;
+    align-items: center;
     gap: 1rem;
 `;
 
@@ -41,25 +42,24 @@ const Overview: React.FC = () => {
     const { records } = useAdminContext();
 
     const invited = records.filter(record => record.fields.type === 'Invited').length;
-    const allowedGuests = records.reduce((acc, record) => (record.fields.allowedGuests || 0) + acc, 0);
-    const attendingGuests = records.filter(record => record.fields.type === 'Guest').length;
     const responded = records.filter(record => record.fields.response).length;
     const respondedYes = records.filter(record => record.fields.response === 'Yes').length;
+    const respondedNo = records.filter(record => record.fields.response === 'No').length;
+    const attendingGuests = records.filter(record => record.fields.type === 'Guest' && record.fields.response === 'Yes').length;
     const pending = invited - responded;
     const percentComplete = Math.floor((responded/invited) * 100);
-    const totalPotentialGuests = invited + allowedGuests;
-    const totalAttending = responded + attendingGuests;
 
     return (
         <OverviewWrapper>
             <OverviewItemsWrapper>
-                <OverviewItem title='RSVPs Attending' data={`${respondedYes} / ${invited}`} />
-                <OverviewItem title='+1s Attending' data={`${attendingGuests} / ${allowedGuests}`} />
+                <OverviewItem title='Invited' data={invited} />
+                <OverviewItem title='Yes' data={respondedYes} />
+                <OverviewItem title='No' data={respondedNo} />
+                <OverviewItem title='Pending' data={pending} />
             </OverviewItemsWrapper>
             <OverviewItemsWrapper>
-                <OverviewItem title='Pending RSVPs' data={pending} />
-                <OverviewItem title='Total Guests' data={totalAttending} />
-                <OverviewItem title='Possible Total' data={totalPotentialGuests} />
+                <OverviewItem title='Guests (+1s)' data={attendingGuests} />
+                <OverviewItem title='Total' data={respondedYes + attendingGuests} />
             </OverviewItemsWrapper>
             <ProgressBar percent={percentComplete || 0} append={`Responded (${responded} / ${invited})`} />
         </OverviewWrapper>

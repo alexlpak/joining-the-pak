@@ -11,6 +11,7 @@ const ProgressBarWrapper = styled.div`
     flex-direction: column;
     align-items: center;
     gap: .5rem;
+    width: 100%;
 `;
 
 const ProgressBarStyled = styled.div`
