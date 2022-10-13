@@ -1,7 +1,9 @@
-import React, { useContext, useState, createContext } from 'react';
+import React, { useContext, useState, createContext, useEffect } from 'react';
+import { validatePasscode } from '../api/admin';
 import { getDataFromTable, FetchedRecord } from '../api/guests';
 import Modal from '../components/Modal';
 import Typography from '../components/Typography';
+import { useSessionStorage } from '../hooks/useSessionStorage';
 
 interface AdminContextType {
     validated: boolean;
@@ -12,6 +14,8 @@ interface AdminContextType {
     modalOpen: boolean;
     setModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
     setModalContents: React.Dispatch<React.SetStateAction<ModalContents>>;
+    lastAttemptedPassword: string;
+    setLastAttemptedPassword: React.Dispatch<React.SetStateAction<string>>;
 };
 
 const AdminContext = createContext<AdminContextType>({} as AdminContextType);
@@ -31,6 +35,7 @@ type ModalContents = {
 };
 
 export const AdminContextProvider: React.FC<AdminContextProviderProps> = ({ children }) => {
+    const [lastAttemptedPassword, setLastAttemptedPassword] = useSessionStorage('ADMIN_PASS', '');
     const [validated, setValidated] = useState(false);
     const [records, setRecords] = useState([] as FetchedRecord[]);
     const [modalOpen, setModalOpen] = useState(false);
@@ -45,9 +50,19 @@ export const AdminContextProvider: React.FC<AdminContextProviderProps> = ({ chil
         if (response.records) setRecords(response.records);
     };
 
+    const validateUser = async (key: string) => {
+        const validated = await validatePasscode(key);
+        setValidated(() => validated);
+    };
+
+    useEffect(() => {
+        validateUser(lastAttemptedPassword);
+    }, [lastAttemptedPassword])
+
     const value = {
         validated, setValidated,
         records, setRecords, getRecords,
+        lastAttemptedPassword, setLastAttemptedPassword,
         modalOpen, setModalOpen, setModalContents
     };
     

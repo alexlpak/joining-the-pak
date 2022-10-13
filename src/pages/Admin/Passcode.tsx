@@ -22,7 +22,7 @@ const Passcode: React.FC = () => {
     const [loading, setLoading] = useState(false);
     const [value, setValue] = useState(initValue);
 
-    const { setValidated } = useAdminContext();
+    const { setValidated, setLastAttemptedPassword } = useAdminContext();
 
     const theme = useTheme();
 
@@ -31,6 +31,7 @@ const Passcode: React.FC = () => {
         setLoading(true);
         const validPasscode = await validatePasscode(value.passcode);
         setLoading(false);
+        setLastAttemptedPassword(value.passcode);
         if (validPasscode) {
             if (error) setError('');
             setValue(initValue);
