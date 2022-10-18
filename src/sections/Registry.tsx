@@ -34,7 +34,7 @@ const SectionContentsWrapper = styled.div`
 `;
 
 const data = {
-    verbiage: `Thank you for being part of our special day. Your presence at our wedding is the greatest gift we could ask for!\n\nIn this next stage in our life, we have been working hard to save up to purchase our first home together.\n\nWhile we do not require a gift, if you'd like to contribute towards that goal, we have linked our PayPal and Venmo links below.`
+    verbiage: `Thank you for being part of our special day. Your presence at our wedding is the greatest gift we could ask for!\n\nIn this next stage in our life, we have been working hard to save up to purchase our first home together.\n\nWhile we do not require a gift, if you'd like to contribute towards that goal, we have linked our PayPal and Venmo links below.\n\nWe have also created a registry for items that would help us in our journey as future home owners.`
 };
 
 const RegistrySection = () => {
@@ -57,6 +57,7 @@ const RegistrySection = () => {
                     <ButtonWrapper>
                         <Button target='_blank' href={`https://venmo.com/?txn=pay&audience=public&recipients=Amber-McClanahan&note=Amber%20and%20Alex%20Wedding%20House%20Fund`} as={Link} icon={faExternalLink}>Venmo</Button>
                         <Button target='_blank' href={`https://www.paypal.com/paypalme/AmberMcClanahan?country.x=US&locale.x=en_US`} as={Link} icon={faExternalLink}>PayPal</Button>
+                    <Button target='_blank' href='https://www.amazon.com/wedding/registry/39BZ2D7UKSC1S' as={Link} icon={faExternalLink}>Amazon</Button>
                     </ButtonWrapper>
                 </RegistryContentsStyled>
             </SectionContentsWrapper>
