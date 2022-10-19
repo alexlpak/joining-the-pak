@@ -57,7 +57,7 @@ const RegistrySection = () => {
                     <ButtonWrapper>
                         <Button target='_blank' href={`https://venmo.com/?txn=pay&audience=public&recipients=Amber-McClanahan&note=Amber%20and%20Alex%20Wedding%20House%20Fund`} as={Link} icon={faExternalLink}>Venmo</Button>
                         <Button target='_blank' href={`https://www.paypal.com/paypalme/AmberMcClanahan?country.x=US&locale.x=en_US`} as={Link} icon={faExternalLink}>PayPal</Button>
-                    <Button target='_blank' href='https://www.amazon.com/wedding/registry/39BZ2D7UKSC1S' as={Link} icon={faExternalLink}>Amazon</Button>
+                        <Button target='_blank' href='https://www.amazon.com/wedding/registry/39BZ2D7UKSC1S' as={Link} icon={faExternalLink}>Amazon</Button>
                     </ButtonWrapper>
                 </RegistryContentsStyled>
             </SectionContentsWrapper>

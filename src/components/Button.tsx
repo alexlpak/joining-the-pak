@@ -14,6 +14,7 @@ export const ButtonWrapper = styled.div`
     display: flex;
     gap: 1rem;
     justify-content: center;
+    flex-wrap: wrap;
 `;
 
 const ButtonStyled = styled.button<ButtonStyledProps>`
