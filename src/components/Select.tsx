@@ -48,6 +48,7 @@ const DropdownArrayStyled = styled.button.attrs({
 `;
 
 const SelectPlaceholder = styled.span`
+    color: black;
     position: absolute;
     left: 1rem;
     top: 50%;

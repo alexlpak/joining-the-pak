@@ -13,6 +13,8 @@ import { RemUnit } from '../../../types/styling';
 import { getFirstAndLastNameByRecordId } from '../../../helper/guests';
 import CreateForm from './CreateForm';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Select from '../../../components/Select';
+import Typography from '../../../components/Typography';
 
 const TableContentsWrapper = styled.div`
     display: flex;
@@ -218,6 +220,16 @@ const Table: React.FC = () => {
         };
     };
 
+    const handleFilter = (value: FormFieldValue) => {
+        const output = Object.values(value)[0];
+        const filtered = records.filter(record => {
+            if (output === '') return true;
+            if (output === 'Pending') return record.fields.response === '';
+            return record.fields.response === output;
+        });
+        setTableRecords(() => filtered);
+    };
+
     const handleSearch = (value: FormFieldValue) => {
         const query = Object.values(value);
         setSearch(query[0]);
@@ -310,12 +322,21 @@ const Table: React.FC = () => {
 
     return (
         <TableContentsWrapper>
-            <Button icon={faPen} onClick={() => openCreateNewModal()}>Create New</Button>
+            <TableActionsWrapper>
+                <Button icon={faPen} onClick={() => openCreateNewModal()}>Create New</Button>
+                <Select
+                    name='filter'
+                    options={['Yes', 'No', 'Pending']}
+                    placeholder='Filter'
+                    onChange={handleFilter}
+                />
+            </TableActionsWrapper>
             <TableActionsWrapper>
                 <Button disabled={!selected.length} icon={faGear} onClick={() => openBatchEditModal()}>Batch Edit</Button>
                 <Button disabled={!selected.length} icon={faXmark} onClick={() => openBatchDeleteModal()}>Batch Delete</Button>
             </TableActionsWrapper>
             <Input onChange={handleSearch} type='text' name='search' placeholder='Search by Name' width={pageWidth < 550 ? '100%' : '20rem'} />
+            <Typography>Showing {tableRecords.length} of {records.length} records</Typography>
             <TableWrapper>
                 <Header>
                     {tableData.filter(column => column.breakpoint ? pageWidth > column.breakpoint : true).map(column => {
