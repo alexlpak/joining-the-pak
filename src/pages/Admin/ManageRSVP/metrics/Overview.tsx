@@ -43,7 +43,7 @@ const Overview: React.FC = () => {
 
     const invited = records.filter(record => record.fields.type === 'Invited').length;
     const responded = records.filter(record => record.fields.response).length;
-    const respondedYes = records.filter(record => record.fields.response === 'Yes').length;
+    const respondedYes = records.filter(record => record.fields.response === 'Yes' && record.fields.type !== 'Guest').length;
     const respondedNo = records.filter(record => record.fields.response === 'No').length;
     const attendingGuests = records.filter(record => record.fields.type === 'Guest' && record.fields.response === 'Yes').length;
     const pending = invited - responded;
